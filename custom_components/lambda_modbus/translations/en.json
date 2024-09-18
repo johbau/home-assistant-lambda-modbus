@@ -5,9 +5,9 @@
       "user": {
         "title": "Define your Lambda modbus connection",
         "data": {
-          "host": "The ip-address of your Lambda inverter",
+          "host": "The ip-address of your Lambda heatpump",
           "name": "The prefix to be used for your Lambda sensors",
-          "port": "The TCP port on which to connect to the Lambda inverter",
+          "port": "The TCP port on which to connect to the Lambda heatpump",
 		      "modbus_address": "The modbus address",
           "power_control": "Enable setting active power limit",
           "read_meter_1": "Read meter 1 data (only for meter models)",

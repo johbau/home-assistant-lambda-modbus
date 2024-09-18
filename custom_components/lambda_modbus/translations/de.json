@@ -3,11 +3,11 @@
     "title": "Lambda Modbus",
     "step": {
       "user": {
-        "title": "Konfiguriere Deine modbus-Verbindung zum Lambda Wechselrichter.",
+        "title": "Konfiguriere Deine modbus-Verbindung zur Lambda Wärmepumpe.",
         "data": {
-          "host": "Die IP-Adresse des Lambda Wechselrichters",
+          "host": "Die IP-Adresse der Lambda Wärmepumpe",
           "name": "Das Prefix, das für die Lambda Sensoren verwendet werden soll",
-          "port": "Der TCP Port des Lambda Wechselrichters (z.B. 502)",
+          "port": "Der TCP Port der Lambda Wärmepumpes (z.B. 502)",
 		      "modbus_address": "Modbus-Adresse",
           "power_control": "Einstellung der Wirkleistungsbegrenzung aktivieren",
           "read_meter_1": "Lese die Stände des Zähler 1 (nur für Modelle mit Zähler)",
@@ -22,10 +22,10 @@
       }
     },
     "error": {
-      "already_configured": "Der Wechselrichter ist bereits konfiguriert.,"
+      "already_configured": "Der Wärmepumpe ist bereits konfiguriert.,"
     },
     "abort": {
-      "already_configured": "Der Wechselrichter ist bereits konfiguriert."
+      "already_configured": "Der Wärmepumpe ist bereits konfiguriert."
     }
   }
 }
