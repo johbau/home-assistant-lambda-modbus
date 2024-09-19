@@ -24,7 +24,7 @@ CONF_READ_BATTERY3 = "read_battery_3"
 CONF_MAX_EXPORT_CONTROL_SITE_LIMIT = "max_export_control_site_limit"
 DEFAULT_MAX_EXPORT_CONTROL_SITE_LIMIT = 10000
 
-SENSOR_TYPES = {
+INVERTER_SENSOR_TYPES = {
     "AC_Current": ["AC Current", "accurrent", "A", "mdi:current-ac"],
     "AC_CurrentA": ["AC Current A", "accurrenta", "A", "mdi:current-ac"],
     "AC_CurrentB": ["AC Current B", "accurrentb", "A", "mdi:current-ac"],

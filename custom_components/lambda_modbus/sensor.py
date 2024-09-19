@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, Dict, Any
 from .const import (
-    SENSOR_TYPES,
+    INVERTER_SENSOR_TYPES,
     METER1_SENSOR_TYPES,
     METER2_SENSOR_TYPES,
     METER3_SENSOR_TYPES,
@@ -41,15 +41,15 @@ async def async_setup_entry(hass, entry, async_add_entities):
     }
 
     entities = []
-    for sensor_info in SENSOR_TYPES.values():
+    for inverter_sensor_info in INVERTER_SENSOR_TYPES.values():
         sensor = LambdaSensor(
             hub_name,
             hub,
             device_info,
-            sensor_info[0],
-            sensor_info[1],
-            sensor_info[2],
-            sensor_info[3],
+            inverter_sensor_info[0],
+            inverter_sensor_info[1],
+            inverter_sensor_info[2],
+            inverter_sensor_info[3],
         )
         entities.append(sensor)
 
