@@ -24,6 +24,45 @@ CONF_READ_BATTERY3 = "read_battery_3"
 CONF_MAX_EXPORT_CONTROL_SITE_LIMIT = "max_export_control_site_limit"
 DEFAULT_MAX_EXPORT_CONTROL_SITE_LIMIT = 10000
 
+AMBIENT_SENSOR_TYPES = {
+    "Error_Number": ["Ambient Error Number", "error_number", None, None],
+    "Operating_State": ["Ambient Operating State", "operating_state", None, None],
+    "Temperature_1h": ["Ambient Temperature 1h", "temperature_1h", "°C", None],
+    "Temperature_Calculated": ["Ambient Temperature calculated", "temperature_calculated", "°C", None],
+}
+
+ENERGY_MANAGER_SENSOR_TYPES = {
+    "Error_Number": ["Energy Manager Error Number", "error_number", None, None],
+    "Operating_State": ["Energy Manager  Operating State", "operating_state", None, None],
+    "Actual_Power": ["Energy Manager Actual Power", "actual_power", "W", "mdi:power"],
+    "Actual_Power_Consumption": ["Energy Manager Actual Power Consumption", "actual_power_consumption", "W", "mdi:power"],
+    "Setpoint_Power_Consumption": ["Energy Manager Setpoint Power Consumption", "setpoint_power_consumption", "W", "mdi:power"],
+}
+
+HEAT_PUMP_SENSOR_TYPES = {
+    "Error_State": ["Heat Pump Error State", "error_state", None, None],
+    "Error_Number": ["Heat Pump Error Number", "error_number", None, None],
+    "State": ["Heat Pump State", "state", None, None],
+    "Flow_Line_Temperature": ["Heat Pump Flow Line Temperature", "flow_line_temperature", "°C", None],
+    "Return_Line_Temperature": ["Heat Pump Return Line Temperature", "return_line_temperature", "°C", None],
+    "Heat_Sink_Volume_Flow": ["Heat Pump Heat Sink Volume Flow", "heat_sink_volume_flow", "l/h", None],
+    "Energy Source Inlet Temperature": ["Heat Pump Energy Source Inlet Temperature", "energy_source_inlet_temperature", "°C", None],
+    "Energy Source Outlet Temperature": ["Heat Pump Energy Source Outlet Temperature", "energy_source_outlet_temperature", "°C", None],
+    "Energy_Source_Volume_Flow": ["Heat Pump Energy Source Volume Flow", "energy_source_volume_flow", "l/min", None],
+    "Compressor_Unit_Rating": ["Heat Pump Compressor Rating", "compressor_unit_rating", "%", None],
+    "Actual_Heating_Capacity": ["Heat Pump Actual Heating Capacity", "actual_heating_capacity", "kW", "mdi:power"],
+    "Inverter_Power_Consumption": ["Heat Pump Inverter Power Consumption", "inverter_power_consumption", "W", "mdi:power"],
+    "COP": ["Heat Pump COP", "cop", "%", None],
+    "Request_Release_Password_Register": ["Heat Pump Request Release Password Register", "request_release_password_register", None, None],
+    "Request_Type": ["Heat Pump Request Type", "request_type", None, None],
+    "Requested_Flow_Line_Temperature": ["Heat Pump Requested Flow Line Temperature", "requested_flow_line_temperature", "°C", None],
+    "Requested_Return_Line_Temperature": ["Heat Pump Requested Return Line Temperature", "requested_return_line_temperature", "°C", None],
+    "Requested_Heat_Sink_Temperature_Difference": ["Heat Pump Requested Heat Sink Temperature Difference", "requested_heat_sink_temperature_difference", "°C", None],
+    "2nd_Heating_Stage_Relais_State": ["Heat Pump 2nd Heating Stage Relais State", "2nd_heating_stage_relais_state", None, None],
+    "Compressor_Power_Consumption_Accumulated": ["Heat Pump Compressor Power Consumption Accumulated", "compressor_power_consumption_accumulated", "wh", "mdi:power"],
+    "Compressor_Thermal_Energy_Output_Accumulated": ["Heat Pump Compressor Thermal Energy Output Accumulated", "compressor_thermal_power_output_accumulated", "wh", "mdi:power"],
+}
+
 INVERTER_SENSOR_TYPES = {
     "AC_Current": ["AC Current", "accurrent", "A", "mdi:current-ac"],
     "AC_CurrentA": ["AC Current A", "accurrenta", "A", "mdi:current-ac"],
