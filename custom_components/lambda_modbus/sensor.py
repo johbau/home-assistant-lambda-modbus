@@ -1,6 +1,9 @@
 import logging
 from typing import Optional, Dict, Any
 from .const import (
+    AMBIENT_SENSOR_TYPES,
+    ENERGY_MANAGER_SENSOR_TYPES,
+    HEAT_PUMP_SENSOR_TYPES,
     INVERTER_SENSOR_TYPES,
     METER1_SENSOR_TYPES,
     METER2_SENSOR_TYPES,
@@ -41,6 +44,43 @@ async def async_setup_entry(hass, entry, async_add_entities):
     }
 
     entities = []
+    for ambient_sensor_info in AMBIENT_SENSOR_TYPES.values():
+        sensor = LambdaSensor(
+            hub_name,
+            hub,
+            device_info,
+            ambient_sensor_info[0],
+            ambient_sensor_info[1],
+            ambient_sensor_info[2],
+            ambient_sensor_info[3],
+        )
+        entities.append(sensor)
+
+    if hub.energy_manager == True:
+        for energy_manager_sensor_info in ENERGY_MANAGER_SENSOR_TYPES.values():
+            sensor = LambdaSensor(
+                hub_name,
+                hub,
+                device_info,
+                energy_manager_sensor_info[0],
+                energy_manager_sensor_info[1],
+                energy_manager_sensor_info[2],
+                energy_manager_sensor_info[3],
+            )
+            entities.append(sensor)
+
+    for heat_pump_sensor_info in HEAT_PUMP_SENSOR_TYPES.values():
+        sensor = LambdaSensor(
+            hub_name,
+            hub,
+            device_info,
+            heat_pump_sensor_info[0],
+            heat_pump_sensor_info[1],
+            heat_pump_sensor_info[2],
+            heat_pump_sensor_info[3],
+        )
+        entities.append(sensor)
+
     for inverter_sensor_info in INVERTER_SENSOR_TYPES.values():
         sensor = LambdaSensor(
             hub_name,

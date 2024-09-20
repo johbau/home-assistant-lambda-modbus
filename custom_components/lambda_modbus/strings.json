@@ -9,6 +9,7 @@
           "name": "The prefix to be used for your Lambda sensors",
           "port": "The TCP port on which to connect to the Lambda",
           "modbus_address": "The modbus address",
+          "energy_manager": "Enable setting active energy manager",
           "power_control": "Enable setting active power limit",
           "read_meter_1": "Read meter 1 data (only for meter models)",
           "read_meter_2": "Read meter 2 data (only for meter models)",

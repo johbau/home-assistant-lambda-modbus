@@ -9,6 +9,7 @@
           "name": "Das Prefix, das für die Lambda Sensoren verwendet werden soll",
           "port": "Der TCP Port der Lambda Wärmepumpes (z.B. 502)",
 		      "modbus_address": "Modbus-Adresse",
+          "energy_manager": "Einstellung des Energiemanagers aktivieren",
           "power_control": "Einstellung der Wirkleistungsbegrenzung aktivieren",
           "read_meter_1": "Lese die Stände des Zähler 1 (nur für Modelle mit Zähler)",
           "read_meter_2": "Lese die Stände des Zähler 2 (nur für Modelle mit Zähler)",
