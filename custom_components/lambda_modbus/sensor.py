@@ -3,7 +3,9 @@ from typing import Optional, Dict, Any
 from .const import (
     AMBIENT_SENSOR_TYPES,
     ENERGY_MANAGER_SENSOR_TYPES,
-    HEAT_PUMP_SENSOR_TYPES,
+    HP1_HEAT_PUMP_SENSOR_TYPES,
+    HP2_HEAT_PUMP_SENSOR_TYPES,
+    HP3_HEAT_PUMP_SENSOR_TYPES,
     INVERTER_SENSOR_TYPES,
     METER1_SENSOR_TYPES,
     METER2_SENSOR_TYPES,
@@ -69,17 +71,44 @@ async def async_setup_entry(hass, entry, async_add_entities):
             )
             entities.append(sensor)
 
-    for heat_pump_sensor_info in HEAT_PUMP_SENSOR_TYPES.values():
-        sensor = LambdaSensor(
-            hub_name,
-            hub,
-            device_info,
-            heat_pump_sensor_info[0],
-            heat_pump_sensor_info[1],
-            heat_pump_sensor_info[2],
-            heat_pump_sensor_info[3],
-        )
-        entities.append(sensor)
+    if hub.hp1 == True:
+        for heat_pump_sensor_info in HP1_HEAT_PUMP_SENSOR_TYPES.values():
+            sensor = LambdaSensor(
+                hub_name,
+                hub,
+                device_info,
+                heat_pump_sensor_info[0],
+                heat_pump_sensor_info[1],
+                heat_pump_sensor_info[2],
+                heat_pump_sensor_info[3],
+            )
+            entities.append(sensor)
+
+    if hub.hp2 == True:
+        for heat_pump_sensor_info in HP2_HEAT_PUMP_SENSOR_TYPES.values():
+            sensor = LambdaSensor(
+                hub_name,
+                hub,
+                device_info,
+                heat_pump_sensor_info[0],
+                heat_pump_sensor_info[1],
+                heat_pump_sensor_info[2],
+                heat_pump_sensor_info[3],
+            )
+            entities.append(sensor)
+
+    if hub.hp3 == True:
+        for heat_pump_sensor_info in HP3_HEAT_PUMP_SENSOR_TYPES.values():
+            sensor = LambdaSensor(
+                hub_name,
+                hub,
+                device_info,
+                heat_pump_sensor_info[0],
+                heat_pump_sensor_info[1],
+                heat_pump_sensor_info[2],
+                heat_pump_sensor_info[3],
+            )
+            entities.append(sensor)
 
     for inverter_sensor_info in INVERTER_SENSOR_TYPES.values():
         sensor = LambdaSensor(

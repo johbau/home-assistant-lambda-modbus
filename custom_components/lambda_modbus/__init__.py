@@ -25,6 +25,9 @@ from .const import (
     CONF_MODBUS_ADDRESS,
     CONF_ENERGY_MANAGER,
     CONF_POWER_CONTROL,
+    CONF_HEAT_PUMP1,
+    CONF_HEAT_PUMP2,
+    CONF_HEAT_PUMP3,
     CONF_READ_METER1,
     CONF_READ_METER2,
     CONF_READ_METER3,
@@ -33,6 +36,9 @@ from .const import (
     CONF_READ_BATTERY3,
     DEFAULT_ENERGY_MANAGER,
     DEFAULT_POWER_CONTROL,
+    DEFAULT_HEAT_PUMP1,
+    DEFAULT_HEAT_PUMP2,
+    DEFAULT_HEAT_PUMP3,
     DEFAULT_READ_METER1,
     DEFAULT_READ_METER2,
     DEFAULT_READ_METER3,
@@ -61,6 +67,9 @@ LAMBDA_MODBUS_SCHEMA = vol.Schema(
         ): cv.positive_int,
         vol.Optional(CONF_ENERGY_MANAGER, default=DEFAULT_ENERGY_MANAGER): cv.boolean,
         vol.Optional(CONF_POWER_CONTROL, default=DEFAULT_POWER_CONTROL): cv.boolean,
+        vol.Optional(CONF_HEAT_PUMP1, default=DEFAULT_HEAT_PUMP1): cv.boolean,
+        vol.Optional(CONF_HEAT_PUMP2, default=DEFAULT_HEAT_PUMP2): cv.boolean,
+        vol.Optional(CONF_HEAT_PUMP3, default=DEFAULT_HEAT_PUMP3): cv.boolean,
         vol.Optional(CONF_READ_METER1, default=DEFAULT_READ_METER1): cv.boolean,
         vol.Optional(CONF_READ_METER2, default=DEFAULT_READ_METER2): cv.boolean,
         vol.Optional(CONF_READ_METER3, default=DEFAULT_READ_METER3): cv.boolean,
@@ -99,6 +108,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     scan_interval = entry.data[CONF_SCAN_INTERVAL]
     energy_manager = entry.data.get(CONF_ENERGY_MANAGER, DEFAULT_ENERGY_MANAGER),
     power_control = entry.data.get(CONF_POWER_CONTROL, DEFAULT_POWER_CONTROL),
+    hp1 = entry.data.get(CONF_HEAT_PUMP1, DEFAULT_HEAT_PUMP1)
+    hp2 = entry.data.get(CONF_HEAT_PUMP2, DEFAULT_HEAT_PUMP2)
+    hp3 = entry.data.get(CONF_HEAT_PUMP3, DEFAULT_HEAT_PUMP3)
     read_meter1 = entry.data.get(CONF_READ_METER1, DEFAULT_READ_METER1)
     read_meter2 = entry.data.get(CONF_READ_METER2, DEFAULT_READ_METER2)
     read_meter3 = entry.data.get(CONF_READ_METER3, DEFAULT_READ_METER3)
@@ -120,6 +132,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         scan_interval,
         energy_manager,
         power_control,
+        hp1,
+        hp2,
+        hp3,
         read_meter1,
         read_meter2,
         read_meter3,
@@ -179,6 +194,9 @@ class LambdaModbusHub:
         scan_interval,
         energy_manager=DEFAULT_ENERGY_MANAGER,
         power_control=DEFAULT_POWER_CONTROL,
+        hp1=DEFAULT_HEAT_PUMP1,
+        hp2=DEFAULT_HEAT_PUMP2,
+        hp3=DEFAULT_HEAT_PUMP3,
         read_meter1=DEFAULT_READ_METER1,
         read_meter2=DEFAULT_READ_METER2,
         read_meter3=DEFAULT_READ_METER3,
@@ -195,6 +213,9 @@ class LambdaModbusHub:
         self._address = address
         self.energy_manager = energy_manager
         self.power_control = power_control
+        self.hp1 = hp1
+        self.hp2 = hp2
+        self.hp3 = hp3
         self.read_meter1 = read_meter1
         self.read_meter2 = read_meter2
         self.read_meter3 = read_meter3
@@ -299,6 +320,11 @@ class LambdaModbusHub:
         return self.power_control
 
     @property
+    def has_heat_pump(self):
+        """Return true if a meter is available"""
+        return self.hp1 or self.hp2 or self.hp3
+
+    @property
     def has_meter(self):
         """Return true if a meter is available"""
         return self.read_meter1 or self.read_meter2 or self.read_meter3
@@ -330,6 +356,8 @@ class LambdaModbusHub:
             self.read_modbus_data_ambient()
             and self.read_modbus_data_energy_manager()
             and self.read_modbus_data_heat_pump1()
+            and self.read_modbus_data_heat_pump2()
+            and self.read_modbus_data_heat_pump3()
             and self.read_modbus_data_inverter()
             and self.read_modbus_power_limit()
             and self.read_modbus_data_meter1()
@@ -365,7 +393,16 @@ class LambdaModbusHub:
         return True
 
     def read_modbus_data_heat_pump1(self):
-        return self.read_modbus_data_heat_pump("hp1_", 1000)
+        if self.hp1:
+            return self.read_modbus_data_heat_pump("hp1_", 1000)
+
+    def read_modbus_data_heat_pump2(self):
+        if self.hp2:
+            return self.read_modbus_data_heat_pump("hp2_", 1100)
+
+    def read_modbus_data_heat_pump3(self):
+        if self.hp3:
+            return self.read_modbus_data_heat_pump("hp3_", 1200)
 
     def read_modbus_data_heat_pump(self, meter_prefix, start_address):
         """start reading meter  data"""
