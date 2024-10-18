@@ -39,6 +39,13 @@ AMBIENT_SENSOR_TYPES = {
     "Temperature_Calculated": ["Ambient Temperature calculated", "temperature_calculated", "°C", None],
 }
 
+AMBIENT_SENSOR_OPERATING_STATES = {
+    0: "OFF",
+    1: "AUTOMATIK",
+    2: "MANUAL",
+    3: "ERROR",
+}
+
 ENERGY_MANAGER_SENSOR_TYPES = {
     "Error_Number": ["Energy Manager Error Number", "error_number", None, None],
     "Operating_State": ["Energy Manager  Operating State", "operating_state", None, None],
@@ -47,10 +54,19 @@ ENERGY_MANAGER_SENSOR_TYPES = {
     "Setpoint_Power_Consumption": ["Energy Manager Setpoint Power Consumption", "setpoint_power_consumption", "W", "mdi:power"],
 }
 
+ENERGY_MANAGER_OPERATING_STATES = {
+    0: "OFF",
+    1: "AUTOMATIK",
+    2: "MANUAL",
+    3: "ERROR",
+    4: "OFFLINE",
+}
+
 HP1_HEAT_PUMP_SENSOR_TYPES = {
     "HP1 Error_State": ["HP1 Heat Pump Error State", "hp1_error_state", None, None],
     "HP1 Error_Number": ["HP1 Heat Pump Error Number", "hp1_error_number", None, None],
     "HP1 State": ["HP1 Heat Pump State", "hp1_state", None, None],
+    "HP1 Operating_State": ["HP1 Heat Pump Operating State", "hp1_operating_state", None, None],
     "HP1 Flow_Line_Temperature": ["HP1 Heat Pump Flow Line Temperature", "hp1_flow_line_temperature", "°C", None],
     "HP1 Return_Line_Temperature": ["HP1 Heat Pump Return Line Temperature", "hp1_return_line_temperature", "°C", None],
     "HP1 Heat_Sink_Volume_Flow": ["HP1 Heat Pump Heat Sink Volume Flow", "hp1_heat_sink_volume_flow", "l/h", None],
@@ -75,6 +91,7 @@ HP2_HEAT_PUMP_SENSOR_TYPES = {
     "HP2 Error_State": ["HP2 Heat Pump Error State", "hp2_error_state", None, None],
     "HP2 Error_Number": ["HP2 Heat Pump Error Number", "hp2_error_number", None, None],
     "HP2 State": ["HP2 Heat Pump State", "hp2_state", None, None],
+    "HP2 Operating_State": ["HP2 Heat Pump Operating State", "hp2_operating_state", None, None],
     "HP2 Flow_Line_Temperature": ["HP2 Heat Pump Flow Line Temperature", "hp2_flow_line_temperature", "°C", None],
     "HP2 Return_Line_Temperature": ["HP2 Heat Pump Return Line Temperature", "hp2_return_line_temperature", "°C", None],
     "HP2 Heat_Sink_Volume_Flow": ["HP2 Heat Pump Heat Sink Volume Flow", "hp2_heat_sink_volume_flow", "l/h", None],
@@ -99,6 +116,7 @@ HP3_HEAT_PUMP_SENSOR_TYPES = {
     "HP3 Error_State": ["HP3 Heat Pump Error State", "hp3_error_state", None, None],
     "HP3 Error_Number": ["HP3 Heat Pump Error Number", "hp3_error_number", None, None],
     "HP3 State": ["HP3 Heat Pump State", "hp3_state", None, None],
+    "HP3 Operating_State": ["HP3 Heat Pump Operating State", "hp3_operating_state", None, None],
     "HP3 Flow_Line_Temperature": ["HP3 Heat Pump Flow Line Temperature", "hp3_flow_line_temperature", "°C", None],
     "HP3 Return_Line_Temperature": ["HP3 Heat Pump Return Line Temperature", "hp3_return_line_temperature", "°C", None],
     "HP3 Heat_Sink_Volume_Flow": ["HP3 Heat Pump Heat Sink Volume Flow", "hp3_heat_sink_volume_flow", "l/h", None],
@@ -117,6 +135,54 @@ HP3_HEAT_PUMP_SENSOR_TYPES = {
     "HP3 2nd_Heating_Stage_Relais_State": ["HP3 Heat Pump 2nd Heating Stage Relais State", "hp3_2nd_heating_stage_relais_state", None, None],
     "HP3 Compressor_Power_Consumption_Accumulated": ["HP3 Heat Pump Compressor Power Consumption Accumulated", "hp3_compressor_power_consumption_accumulated", "wh", "mdi:power"],
     "HP3 Compressor_Thermal_Energy_Output_Accumulated": ["HP3 Heat Pump Compressor Thermal Energy Output Accumulated", "hp3_compressor_thermal_power_output_accumulated", "wh", "mdi:power"],
+}
+
+HEAT_PUMP_ERROR_STATES = {
+    0: "NONE",
+    1: "MESSAGE",
+    2: "WARNING",
+    3: "ALARM",
+    4: "FAULT",
+}
+
+HEAT_PUMP_STATES = {
+    0: "INIT",
+    1: "REFERENCE",
+    2: "RESTART-BLOCK",
+    3: "READY",
+    4: "START PUMPS",
+    5: "START COMPRESSOR",
+    6: "PRE-REGULATION",
+    7: "REGULATION",
+    8: "Not Used",
+    9: "COOLING",
+    10: "DEFROSTING",
+    20: "STOPPING",
+    30: "FAULT-LOCK",
+    31: "ALARM-BLOCK",
+    40: "ERROR-RESET",
+}
+
+HEAT_PUMP_OPERATING_STATES = {
+    0: "STBY",
+    1: "CH",
+    2: "DHW",
+    3: "CC",
+    4: "CIRCULATE",
+    5: "DEFROST",
+    6: "OFF",
+    7: "FROST",
+    8: "STBY-FROST",
+    9: "Not used",
+    10: "SUMMER",
+    11: "HOLIDAY",
+    12: "ERROR",
+    13: "WARNING",
+    14: "INFO-MESSAGE",
+    15: "TIME-BLOCK",
+    16: "RELEASE-BLOCK",
+    17: "MINTEMP-BLOCK",
+    18: "FIRMWARE-DOWNLOAD",
 }
 
 INVERTER_SENSOR_TYPES = {
