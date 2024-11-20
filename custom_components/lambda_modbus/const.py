@@ -35,6 +35,7 @@ DEFAULT_MAX_EXPORT_CONTROL_SITE_LIMIT = 10000
 AMBIENT_SENSOR_TYPES = {
     "Error_Number": ["Ambient Error Number", "error_number", None, None],
     "Operating_State": ["Ambient Operating State", "operating_state", None, None],
+    "Temperature": ["Ambient Temperature", "temperature", "°C", None],
     "Temperature_1h": ["Ambient Temperature 1h", "temperature_1h", "°C", None],
     "Temperature_Calculated": ["Ambient Temperature calculated", "temperature_calculated", "°C", None],
 }
