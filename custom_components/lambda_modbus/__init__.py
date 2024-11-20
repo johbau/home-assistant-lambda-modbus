@@ -24,6 +24,7 @@ from .const import (
     DEFAULT_MODBUS_ADDRESS,
     CONF_MODBUS_ADDRESS,
     CONF_ENERGY_MANAGER,
+    AMBIENT_SENSOR_OPERATING_STATES,
     CONF_POWER_CONTROL,
     CONF_HEAT_PUMP1,
     CONF_HEAT_PUMP2,
@@ -35,10 +36,14 @@ from .const import (
     CONF_READ_BATTERY2,
     CONF_READ_BATTERY3,
     DEFAULT_ENERGY_MANAGER,
+    ENERGY_MANAGER_OPERATING_STATES,
     DEFAULT_POWER_CONTROL,
     DEFAULT_HEAT_PUMP1,
     DEFAULT_HEAT_PUMP2,
     DEFAULT_HEAT_PUMP3,
+    HEAT_PUMP_ERROR_STATES,
+    HEAT_PUMP_STATES,
+    HEAT_PUMP_OPERATING_STATES,
     DEFAULT_READ_METER1,
     DEFAULT_READ_METER2,
     DEFAULT_READ_METER3,
@@ -376,7 +381,18 @@ class LambdaModbusHub:
         if ambient_data.isError():
             return False
 
-        # TODO
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            ambient_data.registers, byteorder=Endian.BIG
+        )
+        self.data["error_number"] = decoder.decode_16bit_int()
+        operating_state = decoder.decode_16bit_uint()
+        if operating_state in AMBIENT_SENSOR_OPERATING_STATES:
+            self.data["operating_state"] = AMBIENT_SENSOR_OPERATING_STATES[operating_state]
+        else:
+            self.data["operating_state"] = operating_state
+        self.data["temperature"] = decoder.decode_16bit_int() / 10
+        self.data["temperature_1h"] = decoder.decode_16bit_int() / 10
+        self.data["temperature_calculated"] = decoder.decode_16bit_int() / 10
         return True
 
     def read_modbus_data_energy_manager(self):
@@ -389,7 +405,18 @@ class LambdaModbusHub:
         if energy_manager_data.isError():
             return False
 
-        # TODO
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            energy_manager_data.registers, byteorder=Endian.BIG
+        )
+        self.data["error_number"] = decoder.decode_16bit_int()
+        operating_state = decoder.decode_16bit_uint()
+        if operating_state in ENERGY_MANAGER_OPERATING_STATES:
+            self.data["operating_state"] = ENERGY_MANAGER_OPERATING_STATES[operating_state]
+        else:
+            self.data["operating_state"] = operating_state
+        self.data["actual_power"] = decoder.decode_16bit_uint()
+        self.data["actual_power_consumption"] = decoder.decode_16bit_int()
+        self.data["setpoint_power_consumption"] = decoder.decode_16bit_int()
         return True
 
     def read_modbus_data_heat_pump1(self):
@@ -404,7 +431,7 @@ class LambdaModbusHub:
         if self.hp3:
             return self.read_modbus_data_heat_pump("hp3_", 1200)
 
-    def read_modbus_data_heat_pump(self, meter_prefix, start_address):
+    def read_modbus_data_heat_pump(self, heat_pump_prefix, start_address):
         """start reading meter  data"""
         heat_pump_data = self.read_holding_registers(
             unit=self._address, address=start_address, count=24
@@ -412,7 +439,43 @@ class LambdaModbusHub:
         if heat_pump_data.isError():
             return False
 
-        # TODO
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            heat_pump_data.registers, byteorder=Endian.BIG
+        )
+        error_state = decoder.decode_16bit_uint()
+        if error_state in HEAT_PUMP_ERROR_STATES:
+            self.data[heat_pump_prefix + "error_state"] = HEAT_PUMP_ERROR_STATES[error_state]
+        else:
+            self.data[heat_pump_prefix + "error_state"] = error_state
+        self.data[heat_pump_prefix + "error_number"] = decoder.decode_16bit_int()
+        state = decoder.decode_16bit_uint()
+        if error_state in HEAT_PUMP_STATES:
+            self.data[heat_pump_prefix + "state"] = HEAT_PUMP_STATES[state]
+        else:
+            self.data[heat_pump_prefix + "state"] = state
+        operating_state = decoder.decode_16bit_uint()
+        if operating_state in HEAT_PUMP_OPERATING_STATES:
+            self.data[heat_pump_prefix + "operating_state"] = HEAT_PUMP_OPERATING_STATES[operating_state]
+        else:
+            self.data[heat_pump_prefix + "operating_state"] = operating_state
+        self.data[heat_pump_prefix + "flow_line_temperature"] = decoder.decode_16bit_int() / 100
+        self.data[heat_pump_prefix + "return_line_temperature"] = decoder.decode_16bit_int() / 100
+        self.data[heat_pump_prefix + "heat_sink_volume_flow"] = decoder.decode_16bit_int() / 100
+        self.data[heat_pump_prefix + "energy_source_inlet_temperature"] = decoder.decode_16bit_int() / 100
+        self.data[heat_pump_prefix + "energy_source_outlet_temperature"] = decoder.decode_16bit_int() / 100
+        self.data[heat_pump_prefix + "energy_source_volume_flow"] = decoder.decode_16bit_int() / 100
+        self.data[heat_pump_prefix + "compressor_unit_rating"] = decoder.decode_16bit_uint() / 100
+        self.data[heat_pump_prefix + "actual_heating_capacity"] = decoder.decode_16bit_int() / 10
+        self.data[heat_pump_prefix + "inverter_power_consumption"] = decoder.decode_16bit_int()
+        self.data[heat_pump_prefix + "cop"] = decoder.decode_16bit_int() / 100
+        self.data[heat_pump_prefix + "request_release_password_register"] = decoder.decode_16bit_uint()
+        self.data[heat_pump_prefix + "request_type"] = decoder.decode_16bit_int()
+        self.data[heat_pump_prefix + "requested_flow_line_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_pump_prefix + "requested_return_line_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_pump_prefix + "requested_heat_sink_temperature_difference"] = decoder.decode_16bit_int() / 10
+        self.data[heat_pump_prefix + "heating_stage_relais_state"] = decoder.decode_16bit_int()
+        self.data[heat_pump_prefix + "compressor_power_consumption_accumulated"] = decoder.decode_32bit_uint()
+        self.data[heat_pump_prefix + "compressor_thermal_power_output_accumulated"] = decoder.decode_32bit_uint()
         return True
 
     def read_modbus_data_meter1(self):
