@@ -71,7 +71,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             )
             entities.append(sensor)
 
-    if hub.hp1 == True:
+    if hub.read_hp1 == True:
         for heat_pump_sensor_info in HP1_HEAT_PUMP_SENSOR_TYPES.values():
             sensor = LambdaSensor(
                 hub_name,
@@ -84,7 +84,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             )
             entities.append(sensor)
 
-    if hub.hp2 == True:
+    if hub.read_hp2 == True:
         for heat_pump_sensor_info in HP2_HEAT_PUMP_SENSOR_TYPES.values():
             sensor = LambdaSensor(
                 hub_name,
@@ -97,7 +97,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             )
             entities.append(sensor)
 
-    if hub.hp3 == True:
+    if hub.read_hp3 == True:
         for heat_pump_sensor_info in HP3_HEAT_PUMP_SENSOR_TYPES.values():
             sensor = LambdaSensor(
                 hub_name,

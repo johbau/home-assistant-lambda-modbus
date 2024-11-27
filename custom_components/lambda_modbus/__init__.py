@@ -26,9 +26,9 @@ from .const import (
     CONF_ENERGY_MANAGER,
     AMBIENT_SENSOR_OPERATING_STATES,
     CONF_POWER_CONTROL,
-    CONF_HEAT_PUMP1,
-    CONF_HEAT_PUMP2,
-    CONF_HEAT_PUMP3,
+    CONF_READ_HP1,
+    CONF_READ_HP2,
+    CONF_READ_HP3,
     CONF_READ_METER1,
     CONF_READ_METER2,
     CONF_READ_METER3,
@@ -38,9 +38,9 @@ from .const import (
     DEFAULT_ENERGY_MANAGER,
     ENERGY_MANAGER_OPERATING_STATES,
     DEFAULT_POWER_CONTROL,
-    DEFAULT_HEAT_PUMP1,
-    DEFAULT_HEAT_PUMP2,
-    DEFAULT_HEAT_PUMP3,
+    DEFAULT_READ_HP1,
+    DEFAULT_READ_HP2,
+    DEFAULT_READ_HP3,
     HEAT_PUMP_ERROR_STATES,
     HEAT_PUMP_STATES,
     HEAT_PUMP_OPERATING_STATES,
@@ -72,9 +72,9 @@ LAMBDA_MODBUS_SCHEMA = vol.Schema(
         ): cv.positive_int,
         vol.Optional(CONF_ENERGY_MANAGER, default=DEFAULT_ENERGY_MANAGER): cv.boolean,
         vol.Optional(CONF_POWER_CONTROL, default=DEFAULT_POWER_CONTROL): cv.boolean,
-        vol.Optional(CONF_HEAT_PUMP1, default=DEFAULT_HEAT_PUMP1): cv.boolean,
-        vol.Optional(CONF_HEAT_PUMP2, default=DEFAULT_HEAT_PUMP2): cv.boolean,
-        vol.Optional(CONF_HEAT_PUMP3, default=DEFAULT_HEAT_PUMP3): cv.boolean,
+        vol.Optional(CONF_READ_HP1, default=DEFAULT_READ_HP1): cv.boolean,
+        vol.Optional(CONF_READ_HP2, default=DEFAULT_READ_HP2): cv.boolean,
+        vol.Optional(CONF_READ_HP3, default=DEFAULT_READ_HP3): cv.boolean,
         vol.Optional(CONF_READ_METER1, default=DEFAULT_READ_METER1): cv.boolean,
         vol.Optional(CONF_READ_METER2, default=DEFAULT_READ_METER2): cv.boolean,
         vol.Optional(CONF_READ_METER3, default=DEFAULT_READ_METER3): cv.boolean,
@@ -113,9 +113,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     scan_interval = entry.data[CONF_SCAN_INTERVAL]
     energy_manager = entry.data.get(CONF_ENERGY_MANAGER, DEFAULT_ENERGY_MANAGER),
     power_control = entry.data.get(CONF_POWER_CONTROL, DEFAULT_POWER_CONTROL),
-    hp1 = entry.data.get(CONF_HEAT_PUMP1, DEFAULT_HEAT_PUMP1)
-    hp2 = entry.data.get(CONF_HEAT_PUMP2, DEFAULT_HEAT_PUMP2)
-    hp3 = entry.data.get(CONF_HEAT_PUMP3, DEFAULT_HEAT_PUMP3)
+    read_hp1 = entry.data.get(CONF_READ_HP1, DEFAULT_READ_HP1)
+    read_hp2 = entry.data.get(CONF_READ_HP2, DEFAULT_READ_HP2)
+    read_hp3 = entry.data.get(CONF_READ_HP3, DEFAULT_READ_HP3)
     read_meter1 = entry.data.get(CONF_READ_METER1, DEFAULT_READ_METER1)
     read_meter2 = entry.data.get(CONF_READ_METER2, DEFAULT_READ_METER2)
     read_meter3 = entry.data.get(CONF_READ_METER3, DEFAULT_READ_METER3)
@@ -137,9 +137,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         scan_interval,
         energy_manager,
         power_control,
-        hp1,
-        hp2,
-        hp3,
+        read_hp1,
+        read_hp2,
+        read_hp3,
         read_meter1,
         read_meter2,
         read_meter3,
@@ -199,9 +199,9 @@ class LambdaModbusHub:
         scan_interval,
         energy_manager=DEFAULT_ENERGY_MANAGER,
         power_control=DEFAULT_POWER_CONTROL,
-        hp1=DEFAULT_HEAT_PUMP1,
-        hp2=DEFAULT_HEAT_PUMP2,
-        hp3=DEFAULT_HEAT_PUMP3,
+        read_hp1=DEFAULT_READ_HP1,
+        read_hp2=DEFAULT_READ_HP2,
+        read_hp3=DEFAULT_READ_HP3,
         read_meter1=DEFAULT_READ_METER1,
         read_meter2=DEFAULT_READ_METER2,
         read_meter3=DEFAULT_READ_METER3,
@@ -218,9 +218,9 @@ class LambdaModbusHub:
         self._address = address
         self.energy_manager = energy_manager
         self.power_control = power_control
-        self.hp1 = hp1
-        self.hp2 = hp2
-        self.hp3 = hp3
+        self.read_hp1 = read_hp1
+        self.read_hp2 = read_hp2
+        self.read_hp3 = read_hp3
         self.read_meter1 = read_meter1
         self.read_meter2 = read_meter2
         self.read_meter3 = read_meter3
@@ -327,7 +327,7 @@ class LambdaModbusHub:
     @property
     def has_heat_pump(self):
         """Return true if a meter is available"""
-        return self.hp1 or self.hp2 or self.hp3
+        return self.read_hp1 or self.read_hp2 or self.read_hp3
 
     @property
     def has_meter(self):
@@ -420,15 +420,15 @@ class LambdaModbusHub:
         return True
 
     def read_modbus_data_heat_pump1(self):
-        if self.hp1:
+        if self.read_hp1:
             return self.read_modbus_data_heat_pump("hp1_", 1000)
 
     def read_modbus_data_heat_pump2(self):
-        if self.hp2:
+        if self.read_hp2:
             return self.read_modbus_data_heat_pump("hp2_", 1100)
 
     def read_modbus_data_heat_pump3(self):
-        if self.hp3:
+        if self.read_hp3:
             return self.read_modbus_data_heat_pump("hp3_", 1200)
 
     def read_modbus_data_heat_pump(self, heat_pump_prefix, start_address):
