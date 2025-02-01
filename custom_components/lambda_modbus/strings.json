@@ -10,18 +10,10 @@
           "port": "The TCP port on which to connect to the Lambda",
           "modbus_address": "The modbus address",
           "energy_manager": "Enable setting active energy manager",
-          "power_control": "Enable setting active power limit",
           "read_heat_pump_1": "Read heat pump 1 data (only when equipped)",
           "read_heat_pump_2": "Read heat pump 2 data (only when equipped)",
           "read_heat_pump_3": "Read heat pump 3 data (only when equipped)",
-          "read_meter_1": "Read meter 1 data (only for meter models)",
-          "read_meter_2": "Read meter 2 data (only for meter models)",
-          "read_meter_3": "Read meter 3 data (only for meter models)",
-          "read_battery_1": "Read battery 1 data (only when equipped)",
-          "read_battery_2": "Read battery 2 data (only when equipped)",
-          "read_battery_3": "Read battery 3 data (only when equipped)",
-          "scan_interval": "The modbus registers polling interval [s]",
-          "max_export_control_site_limit": "The maximum export-control site-limit [W]"
+          "scan_interval": "The modbus registers polling interval [s]"
         }
       }
     },

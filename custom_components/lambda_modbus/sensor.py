@@ -6,17 +6,7 @@ from .const import (
     HP1_HEAT_PUMP_SENSOR_TYPES,
     HP2_HEAT_PUMP_SENSOR_TYPES,
     HP3_HEAT_PUMP_SENSOR_TYPES,
-    INVERTER_SENSOR_TYPES,
-    METER1_SENSOR_TYPES,
-    METER2_SENSOR_TYPES,
-    METER3_SENSOR_TYPES,
-    BATTERY1_SENSOR_TYPES,
-    BATTERY2_SENSOR_TYPES,
-    BATTERY3_SENSOR_TYPES,
     DOMAIN,
-    ATTR_STATUS_DESCRIPTION,
-    DEVICE_STATUSSES,
-    BATTERY_STATUSSES,
     ATTR_MANUFACTURER,
 )
 from datetime import datetime
@@ -110,96 +100,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
             )
             entities.append(sensor)
 
-    for inverter_sensor_info in INVERTER_SENSOR_TYPES.values():
-        sensor = LambdaSensor(
-            hub_name,
-            hub,
-            device_info,
-            inverter_sensor_info[0],
-            inverter_sensor_info[1],
-            inverter_sensor_info[2],
-            inverter_sensor_info[3],
-        )
-        entities.append(sensor)
-
-    if hub.read_meter1 == True:
-        for meter_sensor_info in METER1_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                meter_sensor_info[0],
-                meter_sensor_info[1],
-                meter_sensor_info[2],
-                meter_sensor_info[3],
-            )
-            entities.append(sensor)
-
-    if hub.read_meter2 == True:
-        for meter_sensor_info in METER2_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                meter_sensor_info[0],
-                meter_sensor_info[1],
-                meter_sensor_info[2],
-                meter_sensor_info[3],
-            )
-            entities.append(sensor)
-
-    if hub.read_meter3 == True:
-        for meter_sensor_info in METER3_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                meter_sensor_info[0],
-                meter_sensor_info[1],
-                meter_sensor_info[2],
-                meter_sensor_info[3],
-            )
-            entities.append(sensor)
-
-    if hub.read_battery1 == True:
-        for sensor_info in BATTERY1_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                sensor_info[0],
-                sensor_info[1],
-                sensor_info[2],
-                sensor_info[3],
-            )
-            entities.append(sensor)
-
-    if hub.read_battery2 == True:
-        for sensor_info in BATTERY2_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                sensor_info[0],
-                sensor_info[1],
-                sensor_info[2],
-                sensor_info[3],
-            )
-            entities.append(sensor)
-
-    if hub.read_battery3 == True:
-        for sensor_info in BATTERY3_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                sensor_info[0],
-                sensor_info[1],
-                sensor_info[2],
-                sensor_info[3],
-            )
-            entities.append(sensor)
-
     async_add_entities(entities)
     return True
 
@@ -266,14 +166,6 @@ class LambdaSensor(SensorEntity):
 
     @property
     def extra_state_attributes(self):
-        if self._key in ["status", "statusvendor"] and self.state in DEVICE_STATUSSES:
-            return {ATTR_STATUS_DESCRIPTION: DEVICE_STATUSSES[self.state]}
-        elif "battery1" in self._key and "battery1_attrs" in self._hub.data:
-            return self._hub.data["battery1_attrs"]
-        elif "battery2" in self._key and "battery2_attrs" in self._hub.data:
-            return self._hub.data["battery2_attrs"]
-        elif "battery3" in self._key and "battery3_attrs" in self._hub.data:
-            return self._hub.data["battery3_attrs"]
         return None
 
     @property
