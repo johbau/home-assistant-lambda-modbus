@@ -1,4 +1,4 @@
-## SOLAREDGE MODBUS TCP
+## LAMBDA MODBUS TCP
 
 Home assistant Custom Component for reading data from Lambda heat pump through modbus TCP.
 
