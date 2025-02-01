@@ -11,4 +11,4 @@ Home assistant Custom Component for reading data from Lambda heat pump through m
 - All modbus registers are read within 1 read cycle for data consistency between sensors.
 
 ### Configuration
-Go to the integrations page in your configuration and click on new integration -> SolarEdge Modbus
+Go to the integrations page in your configuration and click on new integration -> Lambda Modbus
