@@ -1,5 +1,6 @@
 {
   "name": "Lambda Modbus",
+  "render_readme": false,
   "content_in_root": false,
   "domains": ["sensor"],
   "homeassistant": "2025.1.0",
