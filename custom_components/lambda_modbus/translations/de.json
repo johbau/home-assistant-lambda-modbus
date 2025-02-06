@@ -13,6 +13,11 @@
           "read_heat_pump_1": "Lese die Daten der Wärmepumpe 1 (nur für Modelle mit Wärmepumpe 1)",
           "read_heat_pump_2": "Lese die Daten der Wärmepumpe 2 (nur für Modelle mit Wärmepumpe 2)",
           "read_heat_pump_3": "Lese die Daten der Wärmepumpe 3 (nur für Modelle mit Wärmepumpe 3)",
+          "read_boiler_1": "Lese die Daten des Boiler 1 (nur für Modelle mit Boiler 1)",
+          "read_boiler_2": "Lese die Daten des Boiler 2 (nur für Modelle mit Boiler 2)",
+          "read_boiler_3": "Lese die Daten des Boiler 3 (nur für Modelle mit Boiler 3)",
+          "read_boiler_4": "Lese die Daten des Boiler 4 (nur für Modelle mit Boiler 4)",
+          "read_boiler_5": "Lese die Daten des Boiler 5 (nur für Modelle mit Boiler 5)",
           "scan_interval": "Das Abfrageintervall der modbus Register [s]"
         }
       }

@@ -6,6 +6,11 @@ from .const import (
     HP1_HEAT_PUMP_SENSOR_TYPES,
     HP2_HEAT_PUMP_SENSOR_TYPES,
     HP3_HEAT_PUMP_SENSOR_TYPES,
+    BOILER1_SENSOR_TYPES,
+    BOILER2_SENSOR_TYPES,
+    BOILER3_SENSOR_TYPES,
+    BOILER4_SENSOR_TYPES,
+    BOILER5_SENSOR_TYPES,
     DOMAIN,
     ATTR_MANUFACTURER,
 )
@@ -36,69 +41,47 @@ async def async_setup_entry(hass, entry, async_add_entities):
     }
 
     entities = []
-    for ambient_sensor_info in AMBIENT_SENSOR_TYPES.values():
-        sensor = LambdaSensor(
-            hub_name,
-            hub,
-            device_info,
-            ambient_sensor_info[0],
-            ambient_sensor_info[1],
-            ambient_sensor_info[2],
-            ambient_sensor_info[3],
-        )
-        entities.append(sensor)
-
-    if hub.energy_manager == True:
-        for energy_manager_sensor_info in ENERGY_MANAGER_SENSOR_TYPES.values():
+    def add_sensors(sensor_types):
+        for sensor_info in sensor_types.values():
             sensor = LambdaSensor(
                 hub_name,
                 hub,
                 device_info,
-                energy_manager_sensor_info[0],
-                energy_manager_sensor_info[1],
-                energy_manager_sensor_info[2],
-                energy_manager_sensor_info[3],
+                sensor_info[0],
+                sensor_info[1],
+                sensor_info[2],
+                sensor_info[3],
             )
             entities.append(sensor)
 
-    if hub.read_hp1 == True:
-        for heat_pump_sensor_info in HP1_HEAT_PUMP_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                heat_pump_sensor_info[0],
-                heat_pump_sensor_info[1],
-                heat_pump_sensor_info[2],
-                heat_pump_sensor_info[3],
-            )
-            entities.append(sensor)
+    add_sensors(AMBIENT_SENSOR_TYPES)
 
-    if hub.read_hp2 == True:
-        for heat_pump_sensor_info in HP2_HEAT_PUMP_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                heat_pump_sensor_info[0],
-                heat_pump_sensor_info[1],
-                heat_pump_sensor_info[2],
-                heat_pump_sensor_info[3],
-            )
-            entities.append(sensor)
+    if hub.energy_manager:
+        add_sensors(ENERGY_MANAGER_SENSOR_TYPES)
 
-    if hub.read_hp3 == True:
-        for heat_pump_sensor_info in HP3_HEAT_PUMP_SENSOR_TYPES.values():
-            sensor = LambdaSensor(
-                hub_name,
-                hub,
-                device_info,
-                heat_pump_sensor_info[0],
-                heat_pump_sensor_info[1],
-                heat_pump_sensor_info[2],
-                heat_pump_sensor_info[3],
-            )
-            entities.append(sensor)
+    if hub.read_hp1:
+        add_sensors(HP1_HEAT_PUMP_SENSOR_TYPES)
+
+    if hub.read_hp2:
+        add_sensors(HP2_HEAT_PUMP_SENSOR_TYPES)
+
+    if hub.read_hp3:
+        add_sensors(HP3_HEAT_PUMP_SENSOR_TYPES)
+
+    if hub.read_boiler1:
+        add_sensors(BOILER1_SENSOR_TYPES)
+
+    if hub.read_boiler2:
+        add_sensors(BOILER2_SENSOR_TYPES)
+
+    if hub.read_boiler3:
+        add_sensors(BOILER3_SENSOR_TYPES)
+
+    if hub.read_boiler4:
+        add_sensors(BOILER4_SENSOR_TYPES)
+
+    if hub.read_boiler5:
+        add_sensors(BOILER5_SENSOR_TYPES)
 
     async_add_entities(entities)
     return True

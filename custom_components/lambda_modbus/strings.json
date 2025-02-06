@@ -13,6 +13,11 @@
           "read_heat_pump_1": "Read heat pump 1 data (only when equipped)",
           "read_heat_pump_2": "Read heat pump 2 data (only when equipped)",
           "read_heat_pump_3": "Read heat pump 3 data (only when equipped)",
+          "read_boiler_1": "Read boiler 1 data (only when equipped)",
+          "read_boiler_2": "Read boiler 2 data (only when equipped)",
+          "read_boiler_3": "Read boiler 3 data (only when equipped)",
+          "read_boiler_4": "Read boiler 4 data (only when equipped)",
+          "read_boiler_5": "Read boiler 5 data (only when equipped)",
           "scan_interval": "The modbus registers polling interval [s]"
         }
       }

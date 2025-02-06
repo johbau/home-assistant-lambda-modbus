@@ -28,6 +28,11 @@ from .const import (
     CONF_READ_HP1,
     CONF_READ_HP2,
     CONF_READ_HP3,
+    CONF_READ_BOILER1,
+    CONF_READ_BOILER2,
+    CONF_READ_BOILER3,
+    CONF_READ_BOILER4,
+    CONF_READ_BOILER5,
     DEFAULT_ENERGY_MANAGER,
     ENERGY_MANAGER_OPERATING_STATES,
     DEFAULT_READ_HP1,
@@ -36,6 +41,12 @@ from .const import (
     HEAT_PUMP_ERROR_STATES,
     HEAT_PUMP_STATES,
     HEAT_PUMP_OPERATING_STATES,
+    DEFAULT_READ_BOILER1,
+    DEFAULT_READ_BOILER2,
+    DEFAULT_READ_BOILER3,
+    DEFAULT_READ_BOILER4,
+    DEFAULT_READ_BOILER5,
+    BOILER_OPERATING_STATES,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -52,6 +63,11 @@ LAMBDA_MODBUS_SCHEMA = vol.Schema(
         vol.Optional(CONF_READ_HP1, default=DEFAULT_READ_HP1): cv.boolean,
         vol.Optional(CONF_READ_HP2, default=DEFAULT_READ_HP2): cv.boolean,
         vol.Optional(CONF_READ_HP3, default=DEFAULT_READ_HP3): cv.boolean,
+        vol.Optional(CONF_READ_BOILER1, default=DEFAULT_READ_BOILER1): cv.boolean,
+        vol.Optional(CONF_READ_BOILER2, default=DEFAULT_READ_BOILER2): cv.boolean,
+        vol.Optional(CONF_READ_BOILER3, default=DEFAULT_READ_BOILER3): cv.boolean,
+        vol.Optional(CONF_READ_BOILER4, default=DEFAULT_READ_BOILER4): cv.boolean,
+        vol.Optional(CONF_READ_BOILER5, default=DEFAULT_READ_BOILER5): cv.boolean,
         vol.Optional(
             CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
         ): cv.positive_int,
@@ -82,6 +98,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     read_hp1 = entry.data.get(CONF_READ_HP1, DEFAULT_READ_HP1)
     read_hp2 = entry.data.get(CONF_READ_HP2, DEFAULT_READ_HP2)
     read_hp3 = entry.data.get(CONF_READ_HP3, DEFAULT_READ_HP3)
+    read_boiler1 = entry.data.get(CONF_READ_BOILER1, DEFAULT_READ_BOILER1)
+    read_boiler2 = entry.data.get(CONF_READ_BOILER2, DEFAULT_READ_BOILER2)
+    read_boiler3 = entry.data.get(CONF_READ_BOILER3, DEFAULT_READ_BOILER3)
+    read_boiler4 = entry.data.get(CONF_READ_BOILER4, DEFAULT_READ_BOILER4)
+    read_boiler5 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BOILER5)
 
     _LOGGER.debug("Setup %s.%s", DOMAIN, name)
 
@@ -96,6 +117,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         read_hp1,
         read_hp2,
         read_hp3,
+        read_boiler1,
+        read_boiler2,
+        read_boiler3,
+        read_boiler4,
+        read_boiler5,
     )
     """Register the hub."""
     hass.data[DOMAIN][name] = {"hub": hub}
@@ -139,17 +165,22 @@ class LambdaModbusHub:
     """Thread safe wrapper class for pymodbus."""
 
     def __init__(
-        self,
-        hass,
-        name,
-        host,
-        port,
-        address,
-        scan_interval,
-        energy_manager=DEFAULT_ENERGY_MANAGER,
-        read_hp1=DEFAULT_READ_HP1,
-        read_hp2=DEFAULT_READ_HP2,
-        read_hp3=DEFAULT_READ_HP3,
+            self,
+            hass,
+            name,
+            host,
+            port,
+            address,
+            scan_interval,
+            energy_manager=DEFAULT_ENERGY_MANAGER,
+            read_hp1=DEFAULT_READ_HP1,
+            read_hp2=DEFAULT_READ_HP2,
+            read_hp3=DEFAULT_READ_HP3,
+            read_boiler1=DEFAULT_READ_BOILER1,
+            read_boiler2=DEFAULT_READ_BOILER2,
+            read_boiler3=DEFAULT_READ_BOILER3,
+            read_boiler4=DEFAULT_READ_BOILER4,
+            read_boiler5=DEFAULT_READ_BOILER5,
     ):
         """Initialize the Modbus hub."""
         self._hass = hass
@@ -161,6 +192,11 @@ class LambdaModbusHub:
         self.read_hp1 = read_hp1
         self.read_hp2 = read_hp2
         self.read_hp3 = read_hp3
+        self.read_boiler1 = read_boiler1
+        self.read_boiler2 = read_boiler2
+        self.read_boiler3 = read_boiler3
+        self.read_boiler4 = read_boiler4
+        self.read_boiler5 = read_boiler5
         self._scan_interval = timedelta(seconds=scan_interval)
         self._unsub_interval_method = None
         self._sensors = []
@@ -171,7 +207,7 @@ class LambdaModbusHub:
         """Listen for data updates."""
         # This is the first sensor, set up interval.
         if not self._sensors:
-           # self.connect()
+            # self.connect()
             self._unsub_interval_method = async_track_time_interval(
                 self._hass, self.async_refresh_modbus_data, self._scan_interval
             )
@@ -257,6 +293,11 @@ class LambdaModbusHub:
         """Return true if a meter is available"""
         return self.read_hp1 or self.read_hp2 or self.read_hp3
 
+    @property
+    def has_boiler(self):
+        """Return true if a boiler is available"""
+        return self.read_boiler1 or self.read_boiler2 or self.read_boiler3 or self.read_boiler4 or self.read_boiler5
+
     def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
         with self._lock:
@@ -273,11 +314,16 @@ class LambdaModbusHub:
 
     def read_modbus_data(self):
         return (
-            self.read_modbus_data_ambient()
-            and self.read_modbus_data_energy_manager()
-            and self.read_modbus_data_heat_pump1()
-            and self.read_modbus_data_heat_pump2()
-            and self.read_modbus_data_heat_pump3()
+                self.read_modbus_data_ambient()
+                and self.read_modbus_data_energy_manager()
+                and self.read_modbus_data_heat_pump1()
+                and self.read_modbus_data_heat_pump2()
+                and self.read_modbus_data_heat_pump3()
+                and self.read_modbus_data_boiler1()
+                and self.read_modbus_data_boiler2()
+                and self.read_modbus_data_boiler3()
+                and self.read_modbus_data_boiler4()
+                and self.read_modbus_data_boiler5()
         )
 
     def read_modbus_data_ambient(self):
@@ -341,7 +387,7 @@ class LambdaModbusHub:
         return True
 
     def read_modbus_data_heat_pump(self, heat_pump_prefix, start_address):
-        """start reading meter  data"""
+        """start reading heat pump data"""
         heat_pump_data = self.read_holding_registers(
             unit=self._address, address=start_address, count=24
         )
@@ -385,4 +431,60 @@ class LambdaModbusHub:
         self.data[heat_pump_prefix + "heating_stage_relais_state"] = decoder.decode_16bit_int()
         self.data[heat_pump_prefix + "compressor_power_consumption_accumulated"] = decoder.decode_32bit_uint()
         self.data[heat_pump_prefix + "compressor_thermal_power_output_accumulated"] = decoder.decode_32bit_uint()
+        return True
+
+    def read_modbus_data_boiler1(self):
+        if self.read_boiler1:
+            return self.read_modbus_data_boiler("boiler1_", 2000)
+        return True
+
+    def read_modbus_data_boiler2(self):
+        if self.read_boiler2:
+            return self.read_modbus_data_boiler("boiler2_", 2100)
+        return True
+
+    def read_modbus_data_boiler3(self):
+        if self.read_boiler3:
+            return self.read_modbus_data_boiler("boiler3_", 2200)
+        return True
+
+    def read_modbus_data_boiler4(self):
+        if self.read_boiler4:
+            return self.read_modbus_data_boiler("boiler4_", 2300)
+        return True
+
+    def read_modbus_data_boiler5(self):
+        if self.read_boiler5:
+            return self.read_modbus_data_boiler("boiler5_", 2400)
+        return True
+
+    def read_modbus_data_boiler(self, boiler_prefix, start_address):
+        """start reading boiler data"""
+        boiler_data = self.read_holding_registers(
+            unit=self._address, address=start_address, count=4
+        )
+        if boiler_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            boiler_data.registers, byteorder=Endian.BIG
+        )
+        operating_state = decoder.decode_16bit_uint()
+        if operating_state in BOILER_OPERATING_STATES:
+            self.data[boiler_prefix + "operating_state"] = BOILER_OPERATING_STATES[operating_state]
+        else:
+            self.data[boiler_prefix + "operating_state"] = operating_state
+        self.data[boiler_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[boiler_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
+
+        boiler_data = self.read_holding_registers(
+            unit=self._address, address=start_address + 50, count=1
+        )
+        if boiler_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            boiler_data.registers, byteorder=Endian.BIG
+        )
+        self.data[boiler_prefix + "max_temperature"] = decoder.decode_16bit_int() / 10
         return True

@@ -16,10 +16,20 @@ from .const import (
     CONF_READ_HP1,
     CONF_READ_HP2,
     CONF_READ_HP3,
+    CONF_READ_BOILER1,
+    CONF_READ_BOILER2,
+    CONF_READ_BOILER3,
+    CONF_READ_BOILER4,
+    CONF_READ_BOILER5,
     DEFAULT_ENERGY_MANAGER,
     DEFAULT_READ_HP1,
     DEFAULT_READ_HP2,
     DEFAULT_READ_HP3,
+    DEFAULT_READ_BOILER1,
+    DEFAULT_READ_BOILER2,
+    DEFAULT_READ_BOILER3,
+    DEFAULT_READ_BOILER4,
+    DEFAULT_READ_BOILER5,
 )
 from homeassistant.core import HomeAssistant, callback
 
@@ -33,6 +43,11 @@ DATA_SCHEMA = vol.Schema(
         vol.Optional(CONF_READ_HP1, default=DEFAULT_READ_HP1): bool,
         vol.Optional(CONF_READ_HP2, default=DEFAULT_READ_HP2): bool,
         vol.Optional(CONF_READ_HP3, default=DEFAULT_READ_HP3): bool,
+        vol.Optional(CONF_READ_BOILER1, default=DEFAULT_READ_BOILER1): bool,
+        vol.Optional(CONF_READ_BOILER2, default=DEFAULT_READ_BOILER2): bool,
+        vol.Optional(CONF_READ_BOILER3, default=DEFAULT_READ_BOILER3): bool,
+        vol.Optional(CONF_READ_BOILER4, default=DEFAULT_READ_BOILER4): bool,
+        vol.Optional(CONF_READ_BOILER5, default=DEFAULT_READ_BOILER5): bool,
         vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): int,
     }
 )
