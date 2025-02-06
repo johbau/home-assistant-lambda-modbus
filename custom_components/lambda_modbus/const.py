@@ -183,7 +183,7 @@ HEAT_PUMP_OPERATING_STATES = {
 }
 
 BOILER1_SENSOR_TYPES = {
-    "Boiler1 Error_Number": ["Boiler1 Error Number", "boiler1_error_state", None, None],
+    "Boiler1 Error_Number": ["Boiler1 Error Number", "boiler1_error_number", None, None],
     "Boiler1 Operating_State": ["Boiler1 Operating State", "boiler1_operating_state", None, None],
     "Boiler1 Actual_High_Temperature": ["Boiler1 Actual High Temperature", "boiler1_high_temperature", "°C", "mdi:temperature-celsius"],
     "Boiler1 Actual_Low_Temperature": ["Boiler1 Actual Low Temperature", "boiler1_low_temperature", "°C", "mdi:temperature-celsius"],
@@ -191,7 +191,7 @@ BOILER1_SENSOR_TYPES = {
 }
 
 BOILER2_SENSOR_TYPES = {
-    "Boiler2 Error_Number": ["Boiler2 Error Number", "boiler2_error_state", None, None],
+    "Boiler2 Error_Number": ["Boiler2 Error Number", "boiler2_error_number", None, None],
     "Boiler2 Operating_State": ["Boiler2 Operating State", "boiler2_operating_state", None, None],
     "Boiler2 Actual_High_Temperature": ["Boiler2 Actual High Temperature", "boiler2_high_temperature", "°C", "mdi:temperature-celsius"],
     "Boiler2 Actual_Low_Temperature": ["Boiler2 Actual Low Temperature", "boiler2_low_temperature", "°C", "mdi:temperature-celsius"],
@@ -199,7 +199,7 @@ BOILER2_SENSOR_TYPES = {
 }
 
 BOILER3_SENSOR_TYPES = {
-    "Boiler3 Error_Number": ["Boiler3 Error Number", "boiler3_error_state", None, None],
+    "Boiler3 Error_Number": ["Boiler3 Error Number", "boiler3_error_number", None, None],
     "Boiler3 Operating_State": ["Boiler3 Operating State", "boiler3_operating_state", None, None],
     "Boiler3 Actual_High_Temperature": ["Boiler3 Actual High Temperature", "boiler3_high_temperature", "°C", "mdi:temperature-celsius"],
     "Boiler3 Actual_Low_Temperature": ["Boiler3 Actual Low Temperature", "boiler3_low_temperature", "°C", "mdi:temperature-celsius"],
@@ -207,7 +207,7 @@ BOILER3_SENSOR_TYPES = {
 }
 
 BOILER4_SENSOR_TYPES = {
-    "Boiler4 Error_Number": ["Boiler4 Error Number", "boiler4_error_state", None, None],
+    "Boiler4 Error_Number": ["Boiler4 Error Number", "boiler4_error_number", None, None],
     "Boiler4 Operating_State": ["Boiler4 Operating State", "boiler4_operating_state", None, None],
     "Boiler4 Actual_High_Temperature": ["Boiler4 Actual High Temperature", "boiler4_high_temperature", "°C", "mdi:temperature-celsius"],
     "Boiler4 Actual_Low_Temperature": ["Boiler4 Actual Low Temperature", "boiler4_low_temperature", "°C", "mdi:temperature-celsius"],
@@ -215,7 +215,7 @@ BOILER4_SENSOR_TYPES = {
 }
 
 BOILER5_SENSOR_TYPES = {
-    "Boiler5 Error_Number": ["Boiler5 Error Number", "boiler5_error_state", None, None],
+    "Boiler5 Error_Number": ["Boiler5 Error Number", "boiler5_error_number", None, None],
     "Boiler5 Operating_State": ["Boiler5 Operating State", "boiler5_operating_state", None, None],
     "Boiler5 Actual_High_Temperature": ["Boiler5 Actual High Temperature", "boiler5_high_temperature", "°C", "mdi:temperature-celsius"],
     "Boiler5 Actual_Low_Temperature": ["Boiler5 Actual Low Temperature", "boiler5_low_temperature", "°C", "mdi:temperature-celsius"],

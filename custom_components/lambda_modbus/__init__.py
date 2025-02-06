@@ -487,5 +487,5 @@ class LambdaModbusHub:
         decoder = BinaryPayloadDecoder.fromRegisters(
             boiler_data.registers, byteorder=Endian.BIG
         )
-        self.data[boiler_prefix + "max_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[boiler_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
         return True
