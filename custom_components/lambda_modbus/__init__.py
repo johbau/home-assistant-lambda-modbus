@@ -469,6 +469,7 @@ class LambdaModbusHub:
         decoder = BinaryPayloadDecoder.fromRegisters(
             boiler_data.registers, byteorder=Endian.BIG
         )
+        self.data[boiler_prefix + "error_number"] = decoder.decode_16bit_int()
         operating_state = decoder.decode_16bit_uint()
         if operating_state in BOILER_OPERATING_STATES:
             self.data[boiler_prefix + "operating_state"] = BOILER_OPERATING_STATES[operating_state]
