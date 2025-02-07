@@ -336,15 +336,15 @@ class LambdaModbusHub:
         decoder = BinaryPayloadDecoder.fromRegisters(
             ambient_data.registers, byteorder=Endian.BIG
         )
-        self.data["error_number"] = decoder.decode_16bit_int()
+        self.data["ambient_error_number"] = decoder.decode_16bit_int()
         operating_state = decoder.decode_16bit_uint()
         if operating_state in AMBIENT_SENSOR_OPERATING_STATES:
-            self.data["operating_state"] = AMBIENT_SENSOR_OPERATING_STATES[operating_state]
+            self.data["ambient_operating_state"] = AMBIENT_SENSOR_OPERATING_STATES[operating_state]
         else:
-            self.data["operating_state"] = operating_state
-        self.data["temperature"] = decoder.decode_16bit_int() / 10
-        self.data["temperature_1h"] = decoder.decode_16bit_int() / 10
-        self.data["temperature_calculated"] = decoder.decode_16bit_int() / 10
+            self.data["ambient_operating_state"] = operating_state
+        self.data["ambient_temperature"] = decoder.decode_16bit_int() / 10
+        self.data["ambient_temperature_1h"] = decoder.decode_16bit_int() / 10
+        self.data["ambient_temperature_calculated"] = decoder.decode_16bit_int() / 10
         return True
 
     def read_modbus_data_energy_manager(self):
@@ -360,15 +360,15 @@ class LambdaModbusHub:
         decoder = BinaryPayloadDecoder.fromRegisters(
             energy_manager_data.registers, byteorder=Endian.BIG
         )
-        self.data["error_number"] = decoder.decode_16bit_int()
+        self.data["energy_manager_error_number"] = decoder.decode_16bit_int()
         operating_state = decoder.decode_16bit_uint()
         if operating_state in ENERGY_MANAGER_OPERATING_STATES:
-            self.data["operating_state"] = ENERGY_MANAGER_OPERATING_STATES[operating_state]
+            self.data["energy_manager_operating_state"] = ENERGY_MANAGER_OPERATING_STATES[operating_state]
         else:
-            self.data["operating_state"] = operating_state
-        self.data["actual_power"] = decoder.decode_16bit_uint()
-        self.data["actual_power_consumption"] = decoder.decode_16bit_int()
-        self.data["setpoint_power_consumption"] = decoder.decode_16bit_int()
+            self.data["energy_manager_operating_state"] = operating_state
+        self.data["energy_manager_actual_power"] = decoder.decode_16bit_uint()
+        self.data["energy_manager_actual_power_consumption"] = decoder.decode_16bit_int()
+        self.data["energy_manager_setpoint_power_consumption"] = decoder.decode_16bit_int()
         return True
 
     def read_modbus_data_heat_pump1(self):

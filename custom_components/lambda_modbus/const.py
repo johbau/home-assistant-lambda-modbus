@@ -29,11 +29,11 @@ CONF_MAX_EXPORT_CONTROL_SITE_LIMIT = "max_export_control_site_limit"
 DEFAULT_MAX_EXPORT_CONTROL_SITE_LIMIT = 10000
 
 AMBIENT_SENSOR_TYPES = {
-    "Error_Number": ["Ambient Error Number", "error_number", None, None],
-    "Operating_State": ["Ambient Operating State", "operating_state", None, None],
-    "Temperature": ["Ambient Temperature", "temperature", "°C", "mdi:temperature-celsius"],
-    "Temperature_1h": ["Ambient Temperature 1h", "temperature_1h", "°C", "mdi:temperature-celsius"],
-    "Temperature_Calculated": ["Ambient Temperature calculated", "temperature_calculated", "°C", "mdi:temperature-celsius"],
+    "Error_Number": ["Ambient Error Number", "ambient_error_number", None, None],
+    "Operating_State": ["Ambient Operating State", "ambient_operating_state", None, None],
+    "Temperature": ["Ambient Temperature", "ambient_temperature", "°C", "mdi:temperature-celsius"],
+    "Temperature_1h": ["Ambient Temperature 1h", "ambient_temperature_1h", "°C", "mdi:temperature-celsius"],
+    "Temperature_Calculated": ["Ambient Temperature calculated", "ambient_temperature_calculated", "°C", "mdi:temperature-celsius"],
 }
 
 AMBIENT_SENSOR_OPERATING_STATES = {
@@ -44,11 +44,11 @@ AMBIENT_SENSOR_OPERATING_STATES = {
 }
 
 ENERGY_MANAGER_SENSOR_TYPES = {
-    "Error_Number": ["Energy Manager Error Number", "error_number", None, None],
-    "Operating_State": ["Energy Manager  Operating State", "operating_state", None, None],
-    "Actual_Power": ["Energy Manager Actual Power", "actual_power", "W", "mdi:power"],
-    "Actual_Power_Consumption": ["Energy Manager Actual Power Consumption", "actual_power_consumption", "W", "mdi:power"],
-    "Setpoint_Power_Consumption": ["Energy Manager Setpoint Power Consumption", "setpoint_power_consumption", "W", "mdi:power"],
+    "Error_Number": ["Energy Manager Error Number", "energy_manager_error_number", None, None],
+    "Operating_State": ["Energy Manager  Operating State", "energy_manager_operating_state", None, None],
+    "Actual_Power": ["Energy Manager Actual Power", "energy_manager_actual_power", "W", "mdi:power"],
+    "Actual_Power_Consumption": ["Energy Manager Actual Power Consumption", "energy_manager_actual_power_consumption", "W", "mdi:power"],
+    "Setpoint_Power_Consumption": ["Energy Manager Setpoint Power Consumption", "energy_manager_setpoint_power_consumption", "W", "mdi:power"],
 }
 
 ENERGY_MANAGER_OPERATING_STATES = {
