@@ -12,6 +12,11 @@ DEFAULT_READ_BOILER2 = False
 DEFAULT_READ_BOILER3 = False
 DEFAULT_READ_BOILER4 = False
 DEFAULT_READ_BOILER5 = False
+DEFAULT_READ_BUFFER1 = False
+DEFAULT_READ_BUFFER2 = False
+DEFAULT_READ_BUFFER3 = False
+DEFAULT_READ_BUFFER4 = False
+DEFAULT_READ_BUFFER5 = False
 CONF_LAMBDA_HUB = "lambda_hub"
 ATTR_MANUFACTURER = "Lambda"
 CONF_MODBUS_ADDRESS = "modbus_address"
@@ -25,6 +30,11 @@ CONF_READ_BOILER2 = "read_boiler_2"
 CONF_READ_BOILER3 = "read_boiler_3"
 CONF_READ_BOILER4 = "read_boiler_4"
 CONF_READ_BOILER5 = "read_boiler_5"
+CONF_READ_BUFFER1 = "read_buffer_1"
+CONF_READ_BUFFER2 = "read_buffer_2"
+CONF_READ_BUFFER3 = "read_buffer_3"
+CONF_READ_BUFFER4 = "read_buffer_4"
+CONF_READ_BUFFER5 = "read_buffer_5"
 CONF_MAX_EXPORT_CONTROL_SITE_LIMIT = "max_export_control_site_limit"
 DEFAULT_MAX_EXPORT_CONTROL_SITE_LIMIT = 10000
 
@@ -236,4 +246,62 @@ BOILER_OPERATING_STATES = {
     10: "TRAILING-STOP",
     11: "TEMP-STOP",
     12: "STBY-FROST",
+}
+
+BUFFER1_SENSOR_TYPES = {
+    "Buffer1 Error_Number": ["Buffer1 Error Number", "buffer1_error_number", None, None],
+    "Buffer1 Operating_State": ["Buffer1 Operating State", "buffer1_operating_state", None, None],
+    "Buffer1 Actual_High_Temperature": ["Buffer1 Actual High Temperature", "buffer1_high_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer1 Actual_Low_Temperature": ["Buffer1 Actual Low Temperature", "buffer1_low_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer1 Actual_Temperature": ["Buffer1 Actual Temperature", "buffer1_low_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer1 Request_Type": ["Buffer1 Request Type", "buffer1_low_temperature", None, None],
+    "Buffer1 Requested_Flow_Line_Temperature": ["Buffer1 Requested Flow Temperature", "buffer1_requested_flow_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer1 Requested_Return_Line_Temperature": ["Buffer1 Requested Return Temperature", "buffer1_requested_return_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer1 Requested_Temperature_Difference": ["Buffer1 Requested Temperature Difference", "buffer1_requested_temperature_difference", "K", "mdi:temperature-kelvin"],
+    "Buffer1 Requested_Capacity": ["Buffer1 Requested Capacity", "buffer1_requested_capacity", None, None],
+    "Buffer1 Maximum_Temperature": ["Buffer1 Maximum Temperature", "buffer1_maximum_temperature", "°C", "mdi:temperature-celsius"],
+}
+
+BUFFER2_SENSOR_TYPES = {
+    "Buffer2 Error_Number": ["Buffer2 Error Number", "buffer2_error_number", None, None],
+    "Buffer2 Operating_State": ["Buffer2 Operating State", "buffer2_operating_state", None, None],
+    "Buffer"
+
+
+}
+
+BUFFER3_SENSOR_TYPES = {
+    "Buffer3 Error_Number": ["Buffer3 Error Number", "buffer3_error_number", None, None],
+    "Buffer3 Operating_State": ["Buffer3 Operating State", "buffer3_operating_state", None, None],
+}
+
+BUFFER4_SENSOR_TYPES = {
+    "Buffer4 Error_Number": ["Buffer4 Error Number", "buffer4_error_number", None, None],
+    "Buffer4 Operating_State": ["Buffer4 Operating State", "buffer4_operating_state", None, None],
+}
+
+BUFFER5_SENSOR_TYPES = {
+    "Buffer5 Error_Number": ["Buffer5 Error Number", "buffer5_error_number", None, None],
+    "Buffer5 Operating_State": ["Buffer5 Operating State", "buffer5_operating_state", None, None],
+}       
+
+BUFFER_OPERATING_STATES = {
+    0: "STBY",
+    1: "HEATING",
+    2: "COOLING",
+    3: "SUMMER",
+    4: "FROST",
+    5: "HOLIDAY",
+    6: "PRIO-STOP",
+    7: "ERROR",
+    8: "OFF",
+    9: "STBY-FROST",
+}
+
+BUFFER_REQUEST_TYPES = {
+    -1: "INVALID REQUEST",
+    0: "NO REQUEST",
+    1: "FLOW PUMP CIRCULATION",
+    2: "CENTRAL HEATING",
+    3: "CENTRAL COOLING",
 }
