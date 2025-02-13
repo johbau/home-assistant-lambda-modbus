@@ -11,6 +11,11 @@ from .const import (
     BOILER3_SENSOR_TYPES,
     BOILER4_SENSOR_TYPES,
     BOILER5_SENSOR_TYPES,
+    BUFFER1_SENSOR_TYPES,   
+    BUFFER2_SENSOR_TYPES,
+    BUFFER3_SENSOR_TYPES,
+    BUFFER4_SENSOR_TYPES,
+    BUFFER5_SENSOR_TYPES,
     DOMAIN,
     ATTR_MANUFACTURER,
 )
@@ -82,6 +87,21 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     if hub.read_boiler5:
         add_sensors(BOILER5_SENSOR_TYPES)
+
+    if hub.read_buffer1:
+        add_sensors(BUFFER1_SENSOR_TYPES)
+
+    if hub.read_buffer2:
+        add_sensors(BUFFER2_SENSOR_TYPES)
+
+    if hub.read_buffer3:
+        add_sensors(BUFFER3_SENSOR_TYPES)
+
+    if hub.read_buffer4:
+        add_sensors(BUFFER4_SENSOR_TYPES)
+
+    if hub.read_buffer5:
+        add_sensors(BUFFER5_SENSOR_TYPES)
 
     async_add_entities(entities)
     return True
