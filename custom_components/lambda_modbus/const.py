@@ -253,7 +253,7 @@ BUFFER1_SENSOR_TYPES = {
     "Buffer1 Operating_State": ["Buffer1 Operating State", "buffer1_operating_state", None, None],
     "Buffer1 Actual_High_Temperature": ["Buffer1 Actual High Temperature", "buffer1_high_temperature", "°C", "mdi:temperature-celsius"],
     "Buffer1 Actual_Low_Temperature": ["Buffer1 Actual Low Temperature", "buffer1_low_temperature", "°C", "mdi:temperature-celsius"],
-    "Buffer1 Actual_Temperature": ["Buffer1 Actual Temperature", "buffer1_low_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer1 Actual_Temperature": ["Buffer1 Actual Temperature", "buffer1_actual_temperature", "°C", "mdi:temperature-celsius"],
     "Buffer1 Request_Type": ["Buffer1 Request Type", "buffer1_low_temperature", None, None],
     "Buffer1 Requested_Flow_Line_Temperature": ["Buffer1 Requested Flow Temperature", "buffer1_requested_flow_temperature", "°C", "mdi:temperature-celsius"],
     "Buffer1 Requested_Return_Line_Temperature": ["Buffer1 Requested Return Temperature", "buffer1_requested_return_temperature", "°C", "mdi:temperature-celsius"],
@@ -265,25 +265,58 @@ BUFFER1_SENSOR_TYPES = {
 BUFFER2_SENSOR_TYPES = {
     "Buffer2 Error_Number": ["Buffer2 Error Number", "buffer2_error_number", None, None],
     "Buffer2 Operating_State": ["Buffer2 Operating State", "buffer2_operating_state", None, None],
-    "Buffer"
-
-
+    "Buffer2 Actual_High_Temperature": ["Buffer2 Actual High Temperature", "buffer2_high_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer2 Actual_Low_Temperature": ["Buffer2 Actual Low Temperature", "buffer2_low_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer2 Actual_Temperature": ["Buffer2 Actual Temperature", "buffer2_actual_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer2 Request_Type": ["Buffer2 Request Type", "buffer2_request_type", None, None],
+    "Buffer2 Requested_Flow_Line_Temperature": ["Buffer2 Requested Flow Temperature", "buffer2_requested_flow_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer2 Requested_Return_Line_Temperature": ["Buffer2 Requested Return Temperature", "buffer2_requested_return_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer2 Requested_Temperature_Difference": ["Buffer2 Requested Temperature Difference", "buffer2_requested_temperature_difference", "K", "mdi:temperature-kelvin"],
+    "Buffer2 Requested_Capacity": ["Buffer2 Requested Capacity", "buffer2_requested_capacity", None, None],
+    "Buffer2 Maximum_Temperature": ["Buffer2 Maximum Temperature", "buffer2_maximum_temperature", "°C", "mdi:temperature-celsius"],
 }
 
 BUFFER3_SENSOR_TYPES = {
     "Buffer3 Error_Number": ["Buffer3 Error Number", "buffer3_error_number", None, None],
     "Buffer3 Operating_State": ["Buffer3 Operating State", "buffer3_operating_state", None, None],
+    "Buffer3 Actual_High_Temperature": ["Buffer3 Actual High Temperature", "buffer3_high_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer3 Actual_Low_Temperature": ["Buffer3 Actual Low Temperature", "buffer3_low_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer3 Actual_Temperature": ["Buffer3 Actual Temperature", "buffer3_actual_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer3 Request_Type": ["Buffer3 Request Type", "buffer3_request_type", None, None],
+    "Buffer3 Requested_Flow_Line_Temperature": ["Buffer3 Requested Flow Temperature", "buffer3_requested_flow_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer3 Requested_Return_Line_Temperature": ["Buffer3 Requested Return Temperature", "buffer3_requested_return_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer3 Requested_Temperature_Difference": ["Buffer3 Requested Temperature Difference", "buffer3_requested_temperature_difference", "K", "mdi:temperature-kelvin"],
+    "Buffer3 Requested_Capacity": ["Buffer3 Requested Capacity", "buffer3_requested_capacity", None, None],
+    "Buffer3 Maximum_Temperature": ["Buffer3 Maximum Temperature", "buffer3_maximum_temperature", "°C", "mdi:temperature-celsius"],
 }
 
 BUFFER4_SENSOR_TYPES = {
     "Buffer4 Error_Number": ["Buffer4 Error Number", "buffer4_error_number", None, None],
     "Buffer4 Operating_State": ["Buffer4 Operating State", "buffer4_operating_state", None, None],
+    "Buffer4 Actual_High_Temperature": ["Buffer4 Actual High Temperature", "buffer4_high_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer4 Actual_Low_Temperature": ["Buffer4 Actual Low Temperature", "buffer4_low_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer4 Actual_Temperature": ["Buffer4 Actual Temperature", "buffer4_actual_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer4 Request_Type": ["Buffer4 Request Type", "buffer4_request_type", None, None],
+    "Buffer4 Requested_Flow_Line_Temperature": ["Buffer4 Requested Flow Temperature", "buffer4_requested_flow_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer4 Requested_Return_Line_Temperature": ["Buffer4 Requested Return Temperature", "buffer4_requested_return_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer4 Requested_Temperature_Difference": ["Buffer4 Requested Temperature Difference", "buffer4_requested_temperature_difference", "K", "mdi:temperature-kelvin"],
+    "Buffer4 Requested_Capacity": ["Buffer4 Requested Capacity", "buffer4_requested_capacity", None, None],
+    "Buffer4 Maximum_Temperature": ["Buffer4 Maximum Temperature", "buffer4_maximum_temperature", "°C", "mdi:temperature-celsius"],
 }
 
 BUFFER5_SENSOR_TYPES = {
     "Buffer5 Error_Number": ["Buffer5 Error Number", "buffer5_error_number", None, None],
     "Buffer5 Operating_State": ["Buffer5 Operating State", "buffer5_operating_state", None, None],
-}       
+    "Buffer5 Actual_High_Temperature": ["Buffer5 Actual High Temperature", "buffer5_high_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer5 Actual_Low_Temperature": ["Buffer5 Actual Low Temperature", "buffer5_low_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer5 Actual_Temperature": ["Buffer5 Actual Temperature", "buffer5_actual_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer5 Request_Type": ["Buffer5 Request Type", "buffer5_request_type", None, None],
+    "Buffer5 Requested_Flow_Line_Temperature": ["Buffer5 Requested Flow Temperature", "buffer5_requested_flow_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer5 Requested_Return_Line_Temperature": ["Buffer5 Requested Return Temperature", "buffer5_requested_return_temperature", "°C", "mdi:temperature-celsius"],
+    "Buffer5 Requested_Temperature_Difference": ["Buffer5 Requested Temperature Difference", "buffer5_requested_temperature_difference", "K", "mdi:temperature-kelvin"],
+    "Buffer5 Requested_Capacity": ["Buffer5 Requested Capacity", "buffer5_requested_capacity", None, None],
+    "Buffer5 Maximum_Temperature": ["Buffer5 Maximum Temperature", "buffer5_maximum_temperature", "°C", "mdi:temperature-celsius"],
+}
 
 BUFFER_OPERATING_STATES = {
     0: "STBY",
