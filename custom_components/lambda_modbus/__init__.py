@@ -33,6 +33,11 @@ from .const import (
     CONF_READ_BOILER3,
     CONF_READ_BOILER4,
     CONF_READ_BOILER5,
+    CONF_READ_BUFFER1,
+    CONF_READ_BUFFER2,
+    CONF_READ_BUFFER3,
+    CONF_READ_BUFFER4,
+    CONF_READ_BUFFER5,
     DEFAULT_ENERGY_MANAGER,
     ENERGY_MANAGER_OPERATING_STATES,
     DEFAULT_READ_HP1,
@@ -46,6 +51,11 @@ from .const import (
     DEFAULT_READ_BOILER3,
     DEFAULT_READ_BOILER4,
     DEFAULT_READ_BOILER5,
+    DEFAULT_READ_BUFFER1,
+    DEFAULT_READ_BUFFER2,
+    DEFAULT_READ_BUFFER3,
+    DEFAULT_READ_BUFFER4,
+    DEFAULT_READ_BUFFER5,
     BOILER_OPERATING_STATES,
 )
 
@@ -68,6 +78,11 @@ LAMBDA_MODBUS_SCHEMA = vol.Schema(
         vol.Optional(CONF_READ_BOILER3, default=DEFAULT_READ_BOILER3): cv.boolean,
         vol.Optional(CONF_READ_BOILER4, default=DEFAULT_READ_BOILER4): cv.boolean,
         vol.Optional(CONF_READ_BOILER5, default=DEFAULT_READ_BOILER5): cv.boolean,
+        vol.Optional(CONF_READ_BUFFER1, default=DEFAULT_READ_BUFFER1): cv.boolean,
+        vol.Optional(CONF_READ_BUFFER2, default=DEFAULT_READ_BUFFER2): cv.boolean,
+        vol.Optional(CONF_READ_BUFFER3, default=DEFAULT_READ_BUFFER3): cv.boolean,
+        vol.Optional(CONF_READ_BUFFER4, default=DEFAULT_READ_BUFFER4): cv.boolean,
+        vol.Optional(CONF_READ_BUFFER5, default=DEFAULT_READ_BUFFER5): cv.boolean,
         vol.Optional(
             CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
         ): cv.positive_int,
@@ -103,6 +118,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     read_boiler3 = entry.data.get(CONF_READ_BOILER3, DEFAULT_READ_BOILER3)
     read_boiler4 = entry.data.get(CONF_READ_BOILER4, DEFAULT_READ_BOILER4)
     read_boiler5 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BOILER5)
+    read_buffer1 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER1)
+    read_buffer2 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER2)
+    read_buffer3 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER3)
+    read_buffer4 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER4)
+    read_buffer5 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER5)
 
     _LOGGER.debug("Setup %s.%s", DOMAIN, name)
 
@@ -122,6 +142,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         read_boiler3,
         read_boiler4,
         read_boiler5,
+        read_buffer1,
+        read_buffer2,
+        read_buffer3,
+        read_buffer4,
+        read_buffer5,
     )
     """Register the hub."""
     hass.data[DOMAIN][name] = {"hub": hub}
@@ -181,6 +206,11 @@ class LambdaModbusHub:
             read_boiler3=DEFAULT_READ_BOILER3,
             read_boiler4=DEFAULT_READ_BOILER4,
             read_boiler5=DEFAULT_READ_BOILER5,
+            read_buffer1=DEFAULT_READ_BUFFER1,
+            read_buffer2=DEFAULT_READ_BUFFER2,
+            read_buffer3=DEFAULT_READ_BUFFER3,
+            read_buffer4=DEFAULT_READ_BUFFER4,
+            read_buffer5=DEFAULT_READ_BUFFER5,
     ):
         """Initialize the Modbus hub."""
         self._hass = hass
@@ -298,6 +328,11 @@ class LambdaModbusHub:
         """Return true if a boiler is available"""
         return self.read_boiler1 or self.read_boiler2 or self.read_boiler3 or self.read_boiler4 or self.read_boiler5
 
+    @property
+    def has_buffer(self):
+        """Return true if a boiler is available"""
+        return self.read_buffer1 or self.read_buffer2 or self.read_buffer3 or self.read_buffer4 or self.read_buffer5
+
     def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
         with self._lock:
@@ -324,6 +359,11 @@ class LambdaModbusHub:
                 and self.read_modbus_data_boiler3()
                 and self.read_modbus_data_boiler4()
                 and self.read_modbus_data_boiler5()
+                and self.read_modbus_data_buffer1()
+                and self.read_modbus_data_buffer2()
+                and self.read_modbus_data_buffer3()
+                and self.read_modbus_data_buffer4()
+                and self.read_modbus_data_buffer5()
         )
 
     def read_modbus_data_ambient(self):
@@ -459,6 +499,63 @@ class LambdaModbusHub:
         return True
 
     def read_modbus_data_boiler(self, boiler_prefix, start_address):
+        """start reading boiler data"""
+        boiler_data = self.read_holding_registers(
+            unit=self._address, address=start_address, count=4
+        )
+        if boiler_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            boiler_data.registers, byteorder=Endian.BIG
+        )
+        self.data[boiler_prefix + "error_number"] = decoder.decode_16bit_int()
+        operating_state = decoder.decode_16bit_uint()
+        if operating_state in BOILER_OPERATING_STATES:
+            self.data[boiler_prefix + "operating_state"] = BOILER_OPERATING_STATES[operating_state]
+        else:
+            self.data[boiler_prefix + "operating_state"] = operating_state
+        self.data[boiler_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[boiler_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
+
+        boiler_data = self.read_holding_registers(
+            unit=self._address, address=start_address + 50, count=1
+        )
+        if boiler_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            boiler_data.registers, byteorder=Endian.BIG
+        )
+        self.data[boiler_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
+        return True
+
+    def read_modbus_data_buffer1(self):
+        if self.read_buffer1:
+            return self.read_modbus_data_buffer("buffer1_", 3000)
+        return True
+
+    def read_modbus_data_buffer2(self):
+        if self.read_buffer2:
+            return self.read_modbus_data_buffer("buffer2_", 3100)
+        return True
+
+    def read_modbus_data_buffer3(self):
+        if self.read_buffer3:
+            return self.read_modbus_data_buffer("buffer3_", 3200)
+        return True
+
+    def read_modbus_data_buffer4(self):
+        if self.read_buffer4:
+            return self.read_modbus_data_buffer("buffer4_", 3300)
+        return True
+
+    def read_modbus_data_buffer5(self):
+        if self.read_buffer5:
+            return self.read_modbus_data_buffer("buffer5_", 3400)
+        return True
+
+    def read_modbus_data_buffer(self, buffer_prefix, start_address):
         """start reading boiler data"""
         boiler_data = self.read_holding_registers(
             unit=self._address, address=start_address, count=4
