@@ -338,3 +338,30 @@ BUFFER_REQUEST_TYPES = {
     2: "CENTRAL HEATING",
     3: "CENTRAL COOLING",
 }
+
+SOLAR1_SENSOR_TYPES = {
+    "Solar1 Error_Number": ["Solar1 Error Number", "solar1_error_number", None, None],
+    "Solar1 Operating_State": ["Solar1 Operating State", "solar1_operating_state", None, None],
+    "Solar1 Collector_Temperature": ["Solar1 Collector Temperature", "solar1_collector_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar1 Buffer1_Temperature": ["Solar1 Buffer 1 Temperature", "solar1_buffer1_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar1 Buffer2_Temperature": ["Solar1 Buffer 2 Temperature", "solar1_buffer2_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar1 Maximum_Buffer_Temperature": ["Solar1 Maximum Buffer Temperature", "solar1_maximum_buffer_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar1 Buffer_Changeover_Temperature": ["Solar1 Buffer Changeover Temperature", "solar1_buffer_changeover_temperature", "°C", "mdi:temperature-celsius"],
+}
+
+SOLAR2_SENSOR_TYPES = {
+    "Solar2 Error_Number": ["Solar2 Error Number", "solar2_error_number", None, None],
+    "Solar2 Operating_State": ["Solar2 Operating State", "solar2_operating_state", None, None],
+    "Solar2 Collector_Temperature": ["Solar2 Collector Temperature", "solar2_collector_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar2 Buffer1_Temperature": ["Solar2 Buffer 1 Temperature", "solar2_buffer1_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar2 Buffer2_Temperature": ["Solar2 Buffer 2 Temperature", "solar2_buffer2_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar2 Maximum_Buffer_Temperature": ["Solar2 Maximum Buffer Temperature", "solar2_maximum_buffer_temperature", "°C", "mdi:temperature-celsius"],
+    "Solar2 Buffer_Changeover_Temperature": ["Solar2 Buffer Changeover Temperature", "solar2_buffer_changeover_temperature", "°C", "mdi:temperature-celsius"],
+}
+
+SOLAR_OPERATING_STATES = {
+    0: "STBY",
+    1: "HEATING",
+    2: "ERROR",
+    3: "OFF",
+}
