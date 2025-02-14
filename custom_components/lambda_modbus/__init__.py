@@ -38,6 +38,8 @@ from .const import (
     CONF_READ_BUFFER3,
     CONF_READ_BUFFER4,
     CONF_READ_BUFFER5,
+    CONF_READ_SOLAR1,
+    CONF_READ_SOLAR2,
     DEFAULT_ENERGY_MANAGER,
     ENERGY_MANAGER_OPERATING_STATES,
     DEFAULT_READ_HP1,
@@ -59,6 +61,9 @@ from .const import (
     DEFAULT_READ_BUFFER5,
     BUFFER_OPERATING_STATES,
     BUFFER_REQUEST_TYPES,
+    DEFAULT_READ_SOLAR1,
+    DEFAULT_READ_SOLAR2,
+    SOLAR_OPERATING_STATES,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -85,6 +90,8 @@ LAMBDA_MODBUS_SCHEMA = vol.Schema(
         vol.Optional(CONF_READ_BUFFER3, default=DEFAULT_READ_BUFFER3): cv.boolean,
         vol.Optional(CONF_READ_BUFFER4, default=DEFAULT_READ_BUFFER4): cv.boolean,
         vol.Optional(CONF_READ_BUFFER5, default=DEFAULT_READ_BUFFER5): cv.boolean,
+        vol.Optional(CONF_READ_SOLAR1, default=DEFAULT_READ_SOLAR1): cv.boolean,
+        vol.Optional(CONF_READ_SOLAR2, default=DEFAULT_READ_SOLAR2): cv.boolean,
         vol.Optional(
             CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
         ): cv.positive_int,
@@ -125,6 +132,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     read_buffer3 = entry.data.get(CONF_READ_BUFFER3, DEFAULT_READ_BUFFER3)
     read_buffer4 = entry.data.get(CONF_READ_BUFFER4, DEFAULT_READ_BUFFER4)
     read_buffer5 = entry.data.get(CONF_READ_BUFFER5, DEFAULT_READ_BUFFER5)
+    read_solar1 = entry.data.get(CONF_READ_SOLAR1, DEFAULT_READ_SOLAR1)
+    read_solar2 = entry.data.get(CONF_READ_SOLAR2, DEFAULT_READ_SOLAR2)
 
     _LOGGER.debug("Setup %s.%s", DOMAIN, name)
 
@@ -149,6 +158,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         read_buffer3,
         read_buffer4,
         read_buffer5,
+        read_solar1,
+        read_solar2,
     )
     """Register the hub."""
     hass.data[DOMAIN][name] = {"hub": hub}
@@ -213,6 +224,8 @@ class LambdaModbusHub:
             read_buffer3=DEFAULT_READ_BUFFER3,
             read_buffer4=DEFAULT_READ_BUFFER4,
             read_buffer5=DEFAULT_READ_BUFFER5,
+            read_solar1=DEFAULT_READ_SOLAR1,
+            read_solar2=DEFAULT_READ_SOLAR2,
     ):
         """Initialize the Modbus hub."""
         self._hass = hass
@@ -234,6 +247,8 @@ class LambdaModbusHub:
         self.read_buffer3 = read_buffer3
         self.read_buffer4 = read_buffer4
         self.read_buffer5 = read_buffer5
+        self.read_solar1 = read_solar1
+        self.read_solar2 = read_solar2
         self._scan_interval = timedelta(seconds=scan_interval)
         self._unsub_interval_method = None
         self._sensors = []
@@ -340,6 +355,10 @@ class LambdaModbusHub:
         """Return true if a boiler is available"""
         return self.read_buffer1 or self.read_buffer2 or self.read_buffer3 or self.read_buffer4 or self.read_buffer5
 
+    def has_solar(self):
+        """Return true if a solar is available"""
+        return self.read_solar1 or self.read_solar2
+
     def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
         with self._lock:
@@ -371,6 +390,8 @@ class LambdaModbusHub:
                 and self.read_modbus_data_buffer3()
                 and self.read_modbus_data_buffer4()
                 and self.read_modbus_data_buffer5()
+                and self.read_modbus_data_solar1()
+                and self.read_modbus_data_solar2()
         )
 
     def read_modbus_data_ambient(self):
@@ -505,6 +526,16 @@ class LambdaModbusHub:
             return self.read_modbus_data_boiler("boiler5_", 2400)
         return True
 
+    def read_modbus_data_solar1(self):
+        if self.read_solar1:
+            return self.read_modbus_data_solar("solar1_", 2500)
+        return True
+
+    def read_modbus_data_solar2(self):
+        if self.read_solar2:
+            return self.read_modbus_data_solar("solar2_", 2600)
+        return True
+
     def read_modbus_data_boiler(self, boiler_prefix, start_address):
         """start reading boiler data"""
         boiler_data = self.read_holding_registers(
@@ -602,4 +633,55 @@ class LambdaModbusHub:
             buffer_data.registers, byteorder=Endian.BIG
         )
         self.data[buffer_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
+        return True
+
+    def read_modbus_data_solar1(self):
+        if self.read_solar1:
+            return self.read_modbus_data_solar("solar1_", 4000)
+        return True
+
+    def read_modbus_data_solar2(self):
+        if self.read_solar2:
+            return self.read_modbus_data_solar("solar2_", 4100)
+        return True
+
+    def read_modbus_data_solar(self, solar_prefix, start_address):
+        """start reading solar data"""
+        solar_data = self.read_holding_registers(
+            unit=self._address, address=start_address, count=16
+        )
+        if solar_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            solar_data.registers, byteorder=Endian.BIG
+        )
+
+        # Error number
+        self.data[solar_prefix + "error_number"] = decoder.decode_16bit_int()
+
+        # Operating state
+        operating_state = decoder.decode_16bit_uint()
+        if operating_state in SOLAR_OPERATING_STATES:
+            self.data[solar_prefix + "operating_state"] = SOLAR_OPERATING_STATES[operating_state]
+        else:
+            self.data[solar_prefix + "operating_state"] = operating_state
+
+        # Temperatures
+        self.data[solar_prefix + "collector_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[solar_prefix + "buffer1_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[solar_prefix + "buffer2_temperature"] = decoder.decode_16bit_int() / 10
+
+        buffer_data = self.read_holding_registers(
+            unit=self._address, address=start_address + 50, count=1
+        )
+        if buffer_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            buffer_data.registers, byteorder=Endian.BIG
+        )
+        self.data[solar_prefix + "maximum_buffer_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[solar_prefix + "buffer_changeover_temperature"] = decoder.decode_16bit_int() / 10
+
         return True

@@ -17,6 +17,8 @@ DEFAULT_READ_BUFFER2 = False
 DEFAULT_READ_BUFFER3 = False
 DEFAULT_READ_BUFFER4 = False
 DEFAULT_READ_BUFFER5 = False
+DEFAULT_READ_SOLAR1 = False
+DEFAULT_READ_SOLAR2 = False
 CONF_LAMBDA_HUB = "lambda_hub"
 ATTR_MANUFACTURER = "Lambda"
 CONF_MODBUS_ADDRESS = "modbus_address"
@@ -35,8 +37,8 @@ CONF_READ_BUFFER2 = "read_buffer_2"
 CONF_READ_BUFFER3 = "read_buffer_3"
 CONF_READ_BUFFER4 = "read_buffer_4"
 CONF_READ_BUFFER5 = "read_buffer_5"
-CONF_MAX_EXPORT_CONTROL_SITE_LIMIT = "max_export_control_site_limit"
-DEFAULT_MAX_EXPORT_CONTROL_SITE_LIMIT = 10000
+CONF_READ_SOLAR1 = "read_solar_1"
+CONF_READ_SOLAR2 = "read_solar_2"
 
 AMBIENT_SENSOR_TYPES = {
     "Error_Number": ["Ambient Error Number", "ambient_error_number", None, None],
