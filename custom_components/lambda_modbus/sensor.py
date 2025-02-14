@@ -18,18 +18,18 @@ from .const import (
     BUFFER5_SENSOR_TYPES,
     SOLAR1_SENSOR_TYPES,
     SOLAR2_SENSOR_TYPES,
-    HC1_HEAT_CURVE_SENSOR_TYPES,
-    HC2_HEAT_CURVE_SENSOR_TYPES,
-    HC3_HEAT_CURVE_SENSOR_TYPES,
-    HC4_HEAT_CURVE_SENSOR_TYPES,
-    HC5_HEAT_CURVE_SENSOR_TYPES,
-    HC6_HEAT_CURVE_SENSOR_TYPES,
-    HC7_HEAT_CURVE_SENSOR_TYPES,
-    HC8_HEAT_CURVE_SENSOR_TYPES,
-    HC9_HEAT_CURVE_SENSOR_TYPES,
-    HC10_HEAT_CURVE_SENSOR_TYPES,
-    HC11_HEAT_CURVE_SENSOR_TYPES,
-    HC12_HEAT_CURVE_SENSOR_TYPES,
+    HC1_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC2_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC3_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC4_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC5_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC6_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC7_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC8_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC9_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC10_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC11_HEAT_CIRCUIT_SENSOR_TYPES,
+    HC12_HEAT_CIRCUIT_SENSOR_TYPES,
     DOMAIN,
     ATTR_MANUFACTURER,
 )
@@ -125,29 +125,29 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     # Add HC sensors
     if hub.read_hc1:
-        add_sensors(HC1_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC1_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc2:
-        add_sensors(HC2_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC2_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc3:
-        add_sensors(HC3_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC3_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc4:
-        add_sensors(HC4_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC4_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc5:
-        add_sensors(HC5_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC5_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc6:
-        add_sensors(HC6_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC6_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc7:
-        add_sensors(HC7_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC7_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc8:
-        add_sensors(HC8_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC8_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc9:
-        add_sensors(HC9_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC9_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc10:
-        add_sensors(HC10_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC10_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc11:
-        add_sensors(HC11_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC11_HEAT_CIRCUIT_SENSOR_TYPES)
     if hub.read_hc12:
-        add_sensors(HC12_HEAT_CURVE_SENSOR_TYPES)
+        add_sensors(HC12_HEAT_CIRCUIT_SENSOR_TYPES)
 
     async_add_entities(entities)
     return True
