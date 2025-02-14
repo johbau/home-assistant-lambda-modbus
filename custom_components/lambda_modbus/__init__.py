@@ -40,6 +40,18 @@ from .const import (
     CONF_READ_BUFFER5,
     CONF_READ_SOLAR1,
     CONF_READ_SOLAR2,
+    CONF_READ_HC1,
+    CONF_READ_HC2,
+    CONF_READ_HC3,
+    CONF_READ_HC4,
+    CONF_READ_HC5,
+    CONF_READ_HC6,
+    CONF_READ_HC7,
+    CONF_READ_HC8,
+    CONF_READ_HC9,
+    CONF_READ_HC10,
+    CONF_READ_HC11,
+    CONF_READ_HC12,
     DEFAULT_ENERGY_MANAGER,
     ENERGY_MANAGER_OPERATING_STATES,
     DEFAULT_READ_HP1,
@@ -64,6 +76,18 @@ from .const import (
     DEFAULT_READ_SOLAR1,
     DEFAULT_READ_SOLAR2,
     SOLAR_OPERATING_STATES,
+    DEFAULT_READ_HC1,
+    DEFAULT_READ_HC2,
+    DEFAULT_READ_HC3,
+    DEFAULT_READ_HC4,
+    DEFAULT_READ_HC5,
+    DEFAULT_READ_HC6,
+    DEFAULT_READ_HC7,
+    DEFAULT_READ_HC8,
+    DEFAULT_READ_HC9,
+    DEFAULT_READ_HC10,
+    DEFAULT_READ_HC11,
+    DEFAULT_READ_HC12,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -92,6 +116,18 @@ LAMBDA_MODBUS_SCHEMA = vol.Schema(
         vol.Optional(CONF_READ_BUFFER5, default=DEFAULT_READ_BUFFER5): cv.boolean,
         vol.Optional(CONF_READ_SOLAR1, default=DEFAULT_READ_SOLAR1): cv.boolean,
         vol.Optional(CONF_READ_SOLAR2, default=DEFAULT_READ_SOLAR2): cv.boolean,
+        vol.Optional(CONF_READ_HC1, default=DEFAULT_READ_HC1): cv.boolean,
+        vol.Optional(CONF_READ_HC2, default=DEFAULT_READ_HC2): cv.boolean,
+        vol.Optional(CONF_READ_HC3, default=DEFAULT_READ_HC3): cv.boolean,
+        vol.Optional(CONF_READ_HC4, default=DEFAULT_READ_HC4): cv.boolean,
+        vol.Optional(CONF_READ_HC5, default=DEFAULT_READ_HC5): cv.boolean,
+        vol.Optional(CONF_READ_HC6, default=DEFAULT_READ_HC6): cv.boolean,
+        vol.Optional(CONF_READ_HC7, default=DEFAULT_READ_HC7): cv.boolean,
+        vol.Optional(CONF_READ_HC8, default=DEFAULT_READ_HC8): cv.boolean,
+        vol.Optional(CONF_READ_HC9, default=DEFAULT_READ_HC9): cv.boolean,
+        vol.Optional(CONF_READ_HC10, default=DEFAULT_READ_HC10): cv.boolean,
+        vol.Optional(CONF_READ_HC11, default=DEFAULT_READ_HC11): cv.boolean,
+        vol.Optional(CONF_READ_HC12, default=DEFAULT_READ_HC12): cv.boolean,
         vol.Optional(
             CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
         ): cv.positive_int,
@@ -134,6 +170,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     read_buffer5 = entry.data.get(CONF_READ_BUFFER5, DEFAULT_READ_BUFFER5)
     read_solar1 = entry.data.get(CONF_READ_SOLAR1, DEFAULT_READ_SOLAR1)
     read_solar2 = entry.data.get(CONF_READ_SOLAR2, DEFAULT_READ_SOLAR2)
+    read_hc1 = entry.data.get(CONF_READ_HC1, DEFAULT_READ_HC1)
+    read_hc2 = entry.data.get(CONF_READ_HC2, DEFAULT_READ_HC2)
+    read_hc3 = entry.data.get(CONF_READ_HC3, DEFAULT_READ_HC3)
+    read_hc4 = entry.data.get(CONF_READ_HC4, DEFAULT_READ_HC4)
+    read_hc5 = entry.data.get(CONF_READ_HC5, DEFAULT_READ_HC5)
+    read_hc6 = entry.data.get(CONF_READ_HC6, DEFAULT_READ_HC6)
+    read_hc7 = entry.data.get(CONF_READ_HC7, DEFAULT_READ_HC7)
+    read_hc8 = entry.data.get(CONF_READ_HC8, DEFAULT_READ_HC8)
+    read_hc9 = entry.data.get(CONF_READ_HC9, DEFAULT_READ_HC9)
+    read_hc10 = entry.data.get(CONF_READ_HC10, DEFAULT_READ_HC10)
+    read_hc11 = entry.data.get(CONF_READ_HC11, DEFAULT_READ_HC11)
+    read_hc12 = entry.data.get(CONF_READ_HC12, DEFAULT_READ_HC12)
 
     _LOGGER.debug("Setup %s.%s", DOMAIN, name)
 
@@ -160,6 +208,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         read_buffer5,
         read_solar1,
         read_solar2,
+        read_hc1,
+        read_hc2,
+        read_hc3,
+        read_hc4,
+        read_hc5,
+        read_hc6,
+        read_hc7,
+        read_hc8,
+        read_hc9,
+        read_hc10,
+        read_hc11,
+        read_hc12,
     )
     """Register the hub."""
     hass.data[DOMAIN][name] = {"hub": hub}
@@ -226,6 +286,18 @@ class LambdaModbusHub:
             read_buffer5=DEFAULT_READ_BUFFER5,
             read_solar1=DEFAULT_READ_SOLAR1,
             read_solar2=DEFAULT_READ_SOLAR2,
+            read_hc1=DEFAULT_READ_HC1,
+            read_hc2=DEFAULT_READ_HC2,
+            read_hc3=DEFAULT_READ_HC3,
+            read_hc4=DEFAULT_READ_HC4,
+            read_hc5=DEFAULT_READ_HC5,
+            read_hc6=DEFAULT_READ_HC6,
+            read_hc7=DEFAULT_READ_HC7,
+            read_hc8=DEFAULT_READ_HC8,
+            read_hc9=DEFAULT_READ_HC9,
+            read_hc10=DEFAULT_READ_HC10,
+            read_hc11=DEFAULT_READ_HC11,
+            read_hc12=DEFAULT_READ_HC12,
     ):
         """Initialize the Modbus hub."""
         self._hass = hass
@@ -249,6 +321,18 @@ class LambdaModbusHub:
         self.read_buffer5 = read_buffer5
         self.read_solar1 = read_solar1
         self.read_solar2 = read_solar2
+        self.read_hc1 = read_hc1
+        self.read_hc2 = read_hc2
+        self.read_hc3 = read_hc3
+        self.read_hc4 = read_hc4
+        self.read_hc5 = read_hc5
+        self.read_hc6 = read_hc6
+        self.read_hc7 = read_hc7
+        self.read_hc8 = read_hc8
+        self.read_hc9 = read_hc9
+        self.read_hc10 = read_hc10
+        self.read_hc11 = read_hc11
+        self.read_hc12 = read_hc12
         self._scan_interval = timedelta(seconds=scan_interval)
         self._unsub_interval_method = None
         self._sensors = []
@@ -359,6 +443,16 @@ class LambdaModbusHub:
         """Return true if a solar is available"""
         return self.read_solar1 or self.read_solar2
 
+    @property
+    def has_heat_circuit(self):
+        """Return true if a heat circuit is available"""
+        return (
+            self.read_hc1 or self.read_hc2 or self.read_hc3 or self.read_hc4 or
+            self.read_hc5 or self.read_hc6 or self.read_hc7 or self.read_hc8 or
+            self.read_hc9 or self.read_hc10 or self.read_hc11 or self.read_hc12
+        )
+
+    @property
     def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
         with self._lock:
@@ -392,6 +486,27 @@ class LambdaModbusHub:
                 and self.read_modbus_data_buffer5()
                 and self.read_modbus_data_solar1()
                 and self.read_modbus_data_solar2()
+                and self.read_modbus_data_energy_manager()
+                and self.read_modbus_data_heat_pump1()
+                and self.read_modbus_data_heat_pump2()
+                and self.read_modbus_data_heat_pump3()
+                and self.read_modbus_data_boiler1()
+                and self.read_modbus_data_boiler2()
+                and self.read_modbus_data_boiler3()
+                and self.read_modbus_data_boiler4()
+                and self.read_modbus_data_boiler5()
+                and self.read_modbus_data_heat_circuit1()
+                and self.read_modbus_data_heat_circuit2()
+                and self.read_modbus_data_heat_circuit3()
+                and self.read_modbus_data_heat_circuit4()
+                and self.read_modbus_data_heat_circuit5()
+                and self.read_modbus_data_heat_circuit6()
+                and self.read_modbus_data_heat_circuit7()
+                and self.read_modbus_data_heat_circuit8()
+                and self.read_modbus_data_heat_circuit9()
+                and self.read_modbus_data_heat_circuit10()
+                and self.read_modbus_data_heat_circuit11()
+               and self.read_modbus_data_heat_circuit12()
         )
 
     def read_modbus_data_ambient(self):
@@ -684,4 +799,101 @@ class LambdaModbusHub:
         self.data[solar_prefix + "maximum_buffer_temperature"] = decoder.decode_16bit_int() / 10
         self.data[solar_prefix + "buffer_changeover_temperature"] = decoder.decode_16bit_int() / 10
 
+        return True
+
+    def read_modbus_data_heat_circuit1(self):
+        if self.read_hc1:
+            return self.read_modbus_data_heat_circuit("hc1_", 5000)
+        return True
+
+    def read_modbus_data_heat_circuit1(self):
+        if self.read_hc1:
+            return self.read_modbus_data_heat_circuit("hc1_", 5000)
+        return True
+
+    def read_modbus_data_heat_circuit2(self):
+        if self.read_hc2:
+            return self.read_modbus_data_heat_circuit("hc2_", 5100)
+        return True
+
+    def read_modbus_data_heat_circuit3(self):
+        if self.read_hc3:
+            return self.read_modbus_data_heat_circuit("hc3_", 5200)
+        return True
+
+    def read_modbus_data_heat_circuit4(self):
+        if self.read_hc4:
+            return self.read_modbus_data_heat_circuit("hc4_", 5300)
+        return True
+
+    def read_modbus_data_heat_circuit5(self):
+        if self.read_hc5:
+            return self.read_modbus_data_heat_circuit("hc5_", 5400)
+        return True
+
+    def read_modbus_data_heat_circuit6(self):
+        if self.read_hc6:
+            return self.read_modbus_data_heat_circuit("hc6_", 5500)
+        return True
+
+    def read_modbus_data_heat_circuit7(self):
+        if self.read_hc7:
+            return self.read_modbus_data_heat_circuit("hc7_", 5600)
+        return True
+
+    def read_modbus_data_heat_circuit8(self):
+        if self.read_hc8:
+            return self.read_modbus_data_heat_circuit("hc8_", 5700)
+        return True
+
+    def read_modbus_data_heat_circuit9(self):
+        if self.read_hc9:
+            return self.read_modbus_data_heat_circuit("hc9_", 5800)
+        return True
+
+    def read_modbus_data_heat_circuit10(self):
+        if self.read_hc10:
+            return self.read_modbus_data_heat_circuit("hc10_", 5900)
+        return True
+
+    def read_modbus_data_heat_circuit11(self):
+        if self.read_hc11:
+            return self.read_modbus_data_heat_circuit("hc11_", 6000)
+        return True
+
+    def read_modbus_data_heat_circuit12(self):
+        if self.read_hc12:
+            return self.read_modbus_data_heat_circuit("hc12_", 6100)
+        return True
+
+    def read_modbus_data_heat_circuit(self, heat_circuit_prefix, start_address):
+        """start reading heat circuit data"""
+        heat_circuit_data = self.read_holding_registers(
+            unit=self._address, address=start_address, count=4
+        )
+        if heat_circuit_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            heat_circuit_data.registers, byteorder=Endian.BIG
+        )
+        self.data[heat_circuit_prefix + "error_number"] = decoder.decode_16bit_int()
+        operating_state = decoder.decode_16bit_uint()
+        if operating_state in BOILER_OPERATING_STATES:
+            self.data[heat_circuit_prefix + "operating_state"] = BOILER_OPERATING_STATES[operating_state]
+        else:
+            self.data[heat_circuit_prefix + "operating_state"] = operating_state
+        self.data[heat_circuit_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
+
+        heat_circuit_data = self.read_holding_registers(
+            unit=self._address, address=start_address + 50, count=1
+        )
+        if heat_circuit_data.isError():
+            return False
+
+        decoder = BinaryPayloadDecoder.fromRegisters(
+            heat_circuit_data.registers, byteorder=Endian.BIG
+        )
+        self.data[heat_circuit_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
         return True
