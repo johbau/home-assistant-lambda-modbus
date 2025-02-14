@@ -25,6 +25,18 @@
           "read_buffer_5": "Read buffer 5 data (only when equipped)",
           "read_solar_1": "Read solar 1 data (only when equipped)",
           "read_solar_2": "Read solar 2 data (only when equipped)",
+          "read_heat_circuit_1": "Read heat circuit 1 data (only when equipped)",
+          "read_heat_circuit_2": "Read heat circuit 2 data (only when equipped)",
+          "read_heat_circuit_3": "Read heat circuit 3 data (only when equipped)",
+          "read_heat_circuit_4": "Read heat circuit 4 data (only when equipped)",
+          "read_heat_circuit_5": "Read heat circuit 5 data (only when equipped)",
+          "read_heat_circuit_6": "Read heat circuit 6 data (only when equipped)",
+          "read_heat_circuit_7": "Read heat circuit 7 data (only when equipped)",
+          "read_heat_circuit_8": "Read heat circuit 8 data (only when equipped)",
+          "read_heat_circuit_9": "Read heat circuit 9 data (only when equipped)",
+          "read_heat_circuit_10": "Read heat circuit 10 data (only when equipped)",
+          "read_heat_circuit_11": "Read heat circuit 11 data (only when equipped)",
+          "read_heat_circuit_12": "Read heat circuit 12 data (only when equipped)",
           "scan_interval": "The modbus registers polling interval [s]"
         }
       }

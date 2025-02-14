@@ -25,6 +25,18 @@
           "read_buffer_5": "Lese die Daten des Pufferspeicher 5 (nur für Modelle mit Pufferspeicher 5)",
           "read_solar_1": "Lese die Daten der Solaranlage 1 (nur für Modelle mit Solaranlage 1)",
           "read_solar_2": "Lese die Daten der Solaranlage 2 (nur für Modelle mit Solaranlage 2)",
+          "read_heat_circuit_1": "Lese die Daten des Heizkreis 1 (nur für Modelle mit Heizkreis 1)",
+          "read_heat_circuit_2": "Lese die Daten des Heizkreis 2 (nur für Modelle mit Heizkreis 2)",
+          "read_heat_circuit_3": "Lese die Daten des Heizkreis 3 (nur für Modelle mit Heizkreis 3)",
+          "read_heat_circuit_4": "Lese die Daten des Heizkreis 4 (nur für Modelle mit Heizkreis 4)",
+          "read_heat_circuit_5": "Lese die Daten des Heizkreis 5 (nur für Modelle mit Heizkreis 5)",
+          "read_heat_circuit_6": "Lese die Daten des Heizkreis 6 (nur für Modelle mit Heizkreis 6)",
+          "read_heat_circuit_7": "Lese die Daten des Heizkreis 7 (nur für Modelle mit Heizkreis 7)",
+          "read_heat_circuit_8": "Lese die Daten des Heizkreis 8 (nur für Modelle mit Heizkreis 8)",
+          "read_heat_circuit_9": "Lese die Daten des Heizkreis 9 (nur für Modelle mit Heizkreis 9)",
+          "read_heat_circuit_10": "Lese die Daten des Heizkreis 10 (nur für Modelle mit Heizkreis 10)",
+          "read_heat_circuit_11": "Lese die Daten des Heizkreis 11 (nur für Modelle mit Heizkreis 11)",
+          "read_heat_circuit_12": "Lese die Daten des Heizkreis 12 (nur für Modelle mit Heizkreis 12)",
           "scan_interval": "Das Abfrageintervall der modbus Register [s]"
         }
       }
