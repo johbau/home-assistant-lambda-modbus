@@ -28,6 +28,10 @@ from .const import (
     CONF_READ_BUFFER5,
     CONF_READ_SOLAR1,
     CONF_READ_SOLAR2,
+    CONF_HEAT_CIRCUIT1,
+    CONF_HEAT_CIRCUIT2,
+    CONF_HEAT_CIRCUIT3,
+    CONF_HEAT_CIRCUIT4,
     DEFAULT_ENERGY_MANAGER,
     DEFAULT_READ_HP1,
     DEFAULT_READ_HP2,
@@ -44,7 +48,26 @@ from .const import (
     DEFAULT_READ_BUFFER5,
     DEFAULT_READ_SOLAR1,
     DEFAULT_READ_SOLAR2,
+    CONF_HEAT_CIRCUIT1,
+    CONF_HEAT_CIRCUIT2,
+    CONF_HEAT_CIRCUIT3,
+    CONF_HEAT_CIRCUIT4,
+    DEFAULT_HEAT_CIRCUIT1,
+    DEFAULT_HEAT_CIRCUIT2,
+    DEFAULT_HEAT_CIRCUIT3,
+    DEFAULT_HEAT_CIRCUIT4,
 )
+# Heat circuit configuration
+CONF_HEAT_CIRCUIT1 = "read_hc1"
+CONF_HEAT_CIRCUIT2 = "read_hc2"
+CONF_HEAT_CIRCUIT3 = "read_hc3"
+CONF_HEAT_CIRCUIT4 = "read_hc4"
+
+DEFAULT_HEAT_CIRCUIT1 = True
+DEFAULT_HEAT_CIRCUIT2 = True
+DEFAULT_HEAT_CIRCUIT3 = True
+DEFAULT_HEAT_CIRCUIT4 = True
+
 from homeassistant.core import HomeAssistant, callback
 
 DATA_SCHEMA = vol.Schema(
@@ -69,6 +92,10 @@ DATA_SCHEMA = vol.Schema(
         vol.Optional(CONF_READ_BUFFER5, default=DEFAULT_READ_BUFFER5): bool,
         vol.Optional(CONF_READ_SOLAR1, default=DEFAULT_READ_SOLAR1): bool,
         vol.Optional(CONF_READ_SOLAR2, default=DEFAULT_READ_SOLAR2): bool,
+        vol.Optional(CONF_HEAT_CIRCUIT1, default=DEFAULT_HEAT_CIRCUIT1): bool,
+        vol.Optional(CONF_HEAT_CIRCUIT2, default=DEFAULT_HEAT_CIRCUIT2): bool,
+        vol.Optional(CONF_HEAT_CIRCUIT3, default=DEFAULT_HEAT_CIRCUIT3): bool,
+        vol.Optional(CONF_HEAT_CIRCUIT4, default=DEFAULT_HEAT_CIRCUIT4): bool,
         vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): int,
     }
 )
