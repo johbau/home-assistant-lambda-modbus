@@ -18,6 +18,11 @@
           "read_boiler_3": "Read boiler 3 data (only when equipped)",
           "read_boiler_4": "Read boiler 4 data (only when equipped)",
           "read_boiler_5": "Read boiler 5 data (only when equipped)",
+          "read_buffer_1": "Read buffer 1 data (only when equipped)",
+          "read_buffer_2": "Read buffer 2 data (only when equipped)",
+          "read_buffer_3": "Read buffer 3 data (only when equipped)",
+          "read_buffer_4": "Read buffer 4 data (only when equipped)",
+          "read_buffer_5": "Read buffer 5 data (only when equipped)",
           "scan_interval": "The modbus registers polling interval [s]"
         }
       }
