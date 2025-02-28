@@ -51,12 +51,14 @@ from .const import (
     DEFAULT_READ_BOILER3,
     DEFAULT_READ_BOILER4,
     DEFAULT_READ_BOILER5,
+    BOILER_OPERATING_STATES,
     DEFAULT_READ_BUFFER1,
     DEFAULT_READ_BUFFER2,
     DEFAULT_READ_BUFFER3,
     DEFAULT_READ_BUFFER4,
     DEFAULT_READ_BUFFER5,
-    BOILER_OPERATING_STATES,
+    BUFFER_OPERATING_STATES,
+    BUFFER_REQUEST_TYPES,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -118,11 +120,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     read_boiler3 = entry.data.get(CONF_READ_BOILER3, DEFAULT_READ_BOILER3)
     read_boiler4 = entry.data.get(CONF_READ_BOILER4, DEFAULT_READ_BOILER4)
     read_boiler5 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BOILER5)
-    read_buffer1 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER1)
-    read_buffer2 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER2)
-    read_buffer3 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER3)
-    read_buffer4 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER4)
-    read_buffer5 = entry.data.get(CONF_READ_BOILER5, DEFAULT_READ_BUFFER5)
+    read_buffer1 = entry.data.get(CONF_READ_BUFFER1, DEFAULT_READ_BUFFER1)
+    read_buffer2 = entry.data.get(CONF_READ_BUFFER2, DEFAULT_READ_BUFFER2)
+    read_buffer3 = entry.data.get(CONF_READ_BUFFER3, DEFAULT_READ_BUFFER3)
+    read_buffer4 = entry.data.get(CONF_READ_BUFFER4, DEFAULT_READ_BUFFER4)
+    read_buffer5 = entry.data.get(CONF_READ_BUFFER5, DEFAULT_READ_BUFFER5)
 
     _LOGGER.debug("Setup %s.%s", DOMAIN, name)
 
@@ -227,6 +229,11 @@ class LambdaModbusHub:
         self.read_boiler3 = read_boiler3
         self.read_boiler4 = read_boiler4
         self.read_boiler5 = read_boiler5
+        self.read_buffer1 = read_buffer1
+        self.read_buffer2 = read_buffer2
+        self.read_buffer3 = read_buffer3
+        self.read_buffer4 = read_buffer4
+        self.read_buffer5 = read_buffer5
         self._scan_interval = timedelta(seconds=scan_interval)
         self._unsub_interval_method = None
         self._sensors = []
@@ -556,33 +563,43 @@ class LambdaModbusHub:
         return True
 
     def read_modbus_data_buffer(self, buffer_prefix, start_address):
-        """start reading boiler data"""
-        boiler_data = self.read_holding_registers(
-            unit=self._address, address=start_address, count=4
+        """start reading buffer data"""
+        buffer_data = self.read_holding_registers(
+            unit=self._address, address=start_address, count=10
         )
-        if boiler_data.isError():
+        if buffer_data.isError():
             return False
 
         decoder = BinaryPayloadDecoder.fromRegisters(
-            boiler_data.registers, byteorder=Endian.BIG
+            buffer_data.registers, byteorder=Endian.BIG
         )
-        self.data[boiler_prefix + "error_number"] = decoder.decode_16bit_int()
+        self.data[buffer_prefix + "error_number"] = decoder.decode_16bit_int()
         operating_state = decoder.decode_16bit_uint()
-        if operating_state in BOILER_OPERATING_STATES:
-            self.data[boiler_prefix + "operating_state"] = BOILER_OPERATING_STATES[operating_state]
+        if operating_state in BUFFER_OPERATING_STATES:
+            self.data[buffer_prefix + "operating_state"] = BOILER_OPERATING_STATES[operating_state]
         else:
-            self.data[boiler_prefix + "operating_state"] = operating_state
-        self.data[boiler_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
-        self.data[boiler_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
+            self.data[buffer_prefix + "operating_state"] = operating_state
+        self.data[buffer_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[buffer_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[buffer_prefix + "modbus_temperature"] = decoder.decode_16bit_int() / 10
+        request_type = decoder.decode_16bit_int()
+        if request_type in BUFFER_REQUEST_TYPES:
+            self.data[buffer_prefix + "request_type"] = BUFFER_REQUEST_TYPES[request_type]
+        else:
+            self.data[buffer_prefix + "request_type"] = request_type
+        self.data[buffer_prefix + "requested_flow_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[buffer_prefix + "requested_return_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[buffer_prefix + "requested_temperature_difference"] = decoder.decode_16bit_int() / 10
+        self.data[buffer_prefix + "requested_capacity"] = decoder.decode_16bit_int() / 10
 
-        boiler_data = self.read_holding_registers(
+        buffer_data = self.read_holding_registers(
             unit=self._address, address=start_address + 50, count=1
         )
-        if boiler_data.isError():
+        if buffer_data.isError():
             return False
 
         decoder = BinaryPayloadDecoder.fromRegisters(
-            boiler_data.registers, byteorder=Endian.BIG
+            buffer_data.registers, byteorder=Endian.BIG
         )
-        self.data[boiler_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[buffer_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
         return True
