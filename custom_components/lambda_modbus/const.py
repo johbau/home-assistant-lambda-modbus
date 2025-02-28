@@ -314,7 +314,7 @@ BUFFER5_SENSOR_TYPES = {
     "Buffer5 Requested_Flow_Line_Temperature": ["Buffer5 Requested Flow Temperature", "buffer5_requested_flow_temperature", "°C", "mdi:temperature-celsius"],
     "Buffer5 Requested_Return_Line_Temperature": ["Buffer5 Requested Return Temperature", "buffer5_requested_return_temperature", "°C", "mdi:temperature-celsius"],
     "Buffer5 Requested_Temperature_Difference": ["Buffer5 Requested Temperature Difference", "buffer5_requested_temperature_difference", "K", "mdi:temperature-kelvin"],
-    "Buffer5 Requested_Capacity": ["Buffer5 Requested Capacity", "buffer5_requested_capacity", None, None],
+    "Buffer5 Requested_Capacity": ["Buffer5 Requested Capacity", "buffer5_requested_capacity", "kW", "mdi:power"],
     "Buffer5 Maximum_Temperature": ["Buffer5 Maximum Temperature", "buffer5_maximum_temperature", "°C", "mdi:temperature-celsius"],
 }
 
