@@ -88,6 +88,8 @@ from .const import (
     DEFAULT_READ_HC10,
     DEFAULT_READ_HC11,
     DEFAULT_READ_HC12,
+    HC_OPERATING_STATES,
+    HC_OPERATING_MODES,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -506,7 +508,7 @@ class LambdaModbusHub:
                 and self.read_modbus_data_heat_circuit9()
                 and self.read_modbus_data_heat_circuit10()
                 and self.read_modbus_data_heat_circuit11()
-               and self.read_modbus_data_heat_circuit12()
+                and self.read_modbus_data_heat_circuit12()
         )
 
     def read_modbus_data_ambient(self):
@@ -869,7 +871,7 @@ class LambdaModbusHub:
     def read_modbus_data_heat_circuit(self, heat_circuit_prefix, start_address):
         """start reading heat circuit data"""
         heat_circuit_data = self.read_holding_registers(
-            unit=self._address, address=start_address, count=4
+            unit=self._address, address=start_address, count=7
         )
         if heat_circuit_data.isError():
             return False
@@ -879,15 +881,22 @@ class LambdaModbusHub:
         )
         self.data[heat_circuit_prefix + "error_number"] = decoder.decode_16bit_int()
         operating_state = decoder.decode_16bit_uint()
-        if operating_state in BOILER_OPERATING_STATES:
-            self.data[heat_circuit_prefix + "operating_state"] = BOILER_OPERATING_STATES[operating_state]
+        if operating_state in HC_OPERATING_STATES:
+            self.data[heat_circuit_prefix + "operating_state"] = HC_OPERATING_STATES[operating_state]
         else:
             self.data[heat_circuit_prefix + "operating_state"] = operating_state
-        self.data[heat_circuit_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
-        self.data[heat_circuit_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "flow_line_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "return_line_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "room_device_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "setpoint_flow_line_temperature"] = decoder.decode_16bit_int() / 10
+        operating_mode = decoder.decode_16bit_int()
+        if operating_mode in HC_OPERATING_MODES:
+            self.data[heat_circuit_prefix + "operating_mode"] = HC_OPERATING_MODES[operating_mode]
+        else:
+            self.data[heat_circuit_prefix + "operating_mode"] = operating_state
 
         heat_circuit_data = self.read_holding_registers(
-            unit=self._address, address=start_address + 50, count=1
+            unit=self._address, address=start_address + 50, count=3
         )
         if heat_circuit_data.isError():
             return False
@@ -895,5 +904,7 @@ class LambdaModbusHub:
         decoder = BinaryPayloadDecoder.fromRegisters(
             heat_circuit_data.registers, byteorder=Endian.BIG
         )
-        self.data[heat_circuit_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "setpoint_offset_flow_line_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "setpoint_room_heating_temperature"] = decoder.decode_16bit_int() / 10
+        self.data[heat_circuit_prefix + "setpoint_room_cooling_line_temperature"] = decoder.decode_16bit_int() / 10
         return True
