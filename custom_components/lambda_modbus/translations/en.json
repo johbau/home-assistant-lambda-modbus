@@ -23,8 +23,8 @@
           "read_buffer_3": "Read buffer 3 data (only when equipped)",
           "read_buffer_4": "Read buffer 4 data (only when equipped)",
           "read_buffer_5": "Read buffer 5 data (only when equipped)",
-          "read_solar1": "Read solar 1 data (only when equipped)",
-          "read_solar2": "Read solar 2 data (only when equipped)",
+          "read_solar_1": "Read solar 1 data (only when equipped)",
+          "read_solar_2": "Read solar 2 data (only when equipped)",
           "scan_interval": "The modbus registers polling interval [s]"
         }
       }

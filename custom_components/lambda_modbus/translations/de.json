@@ -23,8 +23,8 @@
           "read_buffer_3": "Lese die Daten des Puffer 3 (nur für Modelle mit Puffer 3)",
           "read_buffer_4": "Lese die Daten des Puffer 4 (nur für Modelle mit Puffer 4)",
           "read_buffer_5": "Lese die Daten des Puffer 5 (nur für Modelle mit Puffer 5)",
-          "read_solar1": "Lese die Daten der Solaranlage 1 (nur für Modelle mit Solaranlage 1)",
-          "read_solar2": "Lese die Daten der Solaranlage 2 (nur für Modelle mit Solaranlage 2)",
+          "read_solar_1": "Lese die Daten der Solaranlage 1 (nur für Modelle mit Solaranlage 1)",
+          "read_solar_2": "Lese die Daten der Solaranlage 2 (nur für Modelle mit Solaranlage 2)",
           "scan_interval": "Das Abfrageintervall der modbus Register [s]"
         }
       }

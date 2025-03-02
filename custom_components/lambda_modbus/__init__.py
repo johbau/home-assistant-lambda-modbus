@@ -648,7 +648,7 @@ class LambdaModbusHub:
     def read_modbus_data_solar(self, solar_prefix, start_address):
         """start reading solar data"""
         solar_data = self.read_holding_registers(
-            unit=self._address, address=start_address, count=16
+            unit=self._address, address=start_address, count=5
         )
         if solar_data.isError():
             return False
@@ -673,7 +673,7 @@ class LambdaModbusHub:
         self.data[solar_prefix + "buffer2_temperature"] = decoder.decode_16bit_int() / 10
 
         buffer_data = self.read_holding_registers(
-            unit=self._address, address=start_address + 50, count=1
+            unit=self._address, address=start_address + 50, count=2
         )
         if buffer_data.isError():
             return False
