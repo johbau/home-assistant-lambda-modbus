@@ -73,53 +73,48 @@ async def async_setup_entry(hass, entry, async_add_entities):
             )
             entities.append(sensor)
 
+    # Add ambient sensors
     add_sensors(AMBIENT_SENSOR_TYPES)
 
+    # Add energy manager sensors
     if hub.energy_manager:
         add_sensors(ENERGY_MANAGER_SENSOR_TYPES)
 
+    # Add heat pump sensors
     if hub.read_hp1:
         add_sensors(HP1_HEAT_PUMP_SENSOR_TYPES)
-
     if hub.read_hp2:
         add_sensors(HP2_HEAT_PUMP_SENSOR_TYPES)
-
     if hub.read_hp3:
         add_sensors(HP3_HEAT_PUMP_SENSOR_TYPES)
 
+    # Add boiler sensors
     if hub.read_boiler1:
         add_sensors(BOILER1_SENSOR_TYPES)
-
     if hub.read_boiler2:
         add_sensors(BOILER2_SENSOR_TYPES)
-
     if hub.read_boiler3:
         add_sensors(BOILER3_SENSOR_TYPES)
-
     if hub.read_boiler4:
         add_sensors(BOILER4_SENSOR_TYPES)
-
     if hub.read_boiler5:
         add_sensors(BOILER5_SENSOR_TYPES)
 
+    # Add buffer sensors
     if hub.read_buffer1:
         add_sensors(BUFFER1_SENSOR_TYPES)
-
     if hub.read_buffer2:
         add_sensors(BUFFER2_SENSOR_TYPES)
-
     if hub.read_buffer3:
         add_sensors(BUFFER3_SENSOR_TYPES)
-
     if hub.read_buffer4:
         add_sensors(BUFFER4_SENSOR_TYPES)
-
     if hub.read_buffer5:
         add_sensors(BUFFER5_SENSOR_TYPES)
 
+    # Add solar sensors
     if hub.read_solar1:
         add_sensors(SOLAR1_SENSOR_TYPES)
-
     if hub.read_solar2:
         add_sensors(SOLAR2_SENSOR_TYPES)
 
