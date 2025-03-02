@@ -69,16 +69,6 @@ from .const import (
     DEFAULT_READ_HC11,
     DEFAULT_READ_HC12,
 )
-# Heat circuit configuration
-CONF_HEAT_CIRCUIT1 = "read_hc1"
-CONF_HEAT_CIRCUIT2 = "read_hc2"
-CONF_HEAT_CIRCUIT3 = "read_hc3"
-CONF_HEAT_CIRCUIT4 = "read_hc4"
-
-DEFAULT_HEAT_CIRCUIT1 = True
-DEFAULT_HEAT_CIRCUIT2 = True
-DEFAULT_HEAT_CIRCUIT3 = True
-DEFAULT_HEAT_CIRCUIT4 = True
 
 from homeassistant.core import HomeAssistant, callback
 
