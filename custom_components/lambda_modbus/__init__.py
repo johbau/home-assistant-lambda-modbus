@@ -808,11 +808,6 @@ class LambdaModbusHub:
             return self.read_modbus_data_heat_circuit("hc1_", 5000)
         return True
 
-    def read_modbus_data_heat_circuit1(self):
-        if self.read_hc1:
-            return self.read_modbus_data_heat_circuit("hc1_", 5000)
-        return True
-
     def read_modbus_data_heat_circuit2(self):
         if self.read_hc2:
             return self.read_modbus_data_heat_circuit("hc2_", 5100)
