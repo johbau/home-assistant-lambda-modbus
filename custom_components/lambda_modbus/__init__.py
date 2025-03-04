@@ -454,7 +454,6 @@ class LambdaModbusHub:
             self.read_hc9 or self.read_hc10 or self.read_hc11 or self.read_hc12
         )
 
-    @property
     def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
         with self._lock:
