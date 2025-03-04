@@ -23,6 +23,7 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_MODBUS_ADDRESS,
     CONF_MODBUS_ADDRESS,
+    CONF_LATEST_FIRMWARE,
     CONF_ENERGY_MANAGER,
     AMBIENT_SENSOR_OPERATING_STATES,
     CONF_READ_HP1,
@@ -52,6 +53,7 @@ from .const import (
     CONF_READ_HC10,
     CONF_READ_HC11,
     CONF_READ_HC12,
+    DEFAULT_LATEST_FIRMWARE,
     DEFAULT_ENERGY_MANAGER,
     ENERGY_MANAGER_OPERATING_STATES,
     DEFAULT_READ_HP1,
@@ -102,6 +104,7 @@ LAMBDA_MODBUS_SCHEMA = vol.Schema(
         vol.Optional(
             CONF_MODBUS_ADDRESS, default=DEFAULT_MODBUS_ADDRESS
         ): cv.positive_int,
+        vol.Optional(CONF_LATEST_FIRMWARE, default=DEFAULT_LATEST_FIRMWARE): cv.boolean,
         vol.Optional(CONF_ENERGY_MANAGER, default=DEFAULT_ENERGY_MANAGER): cv.boolean,
         vol.Optional(CONF_READ_HP1, default=DEFAULT_READ_HP1): cv.boolean,
         vol.Optional(CONF_READ_HP2, default=DEFAULT_READ_HP2): cv.boolean,
@@ -156,6 +159,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     port = entry.data[CONF_PORT]
     address = entry.data.get(CONF_MODBUS_ADDRESS, 1)
     scan_interval = entry.data[CONF_SCAN_INTERVAL]
+    latest_firmware = entry.data.get(CONF_LATEST_FIRMWARE, DEFAULT_LATEST_FIRMWARE)
     energy_manager = entry.data.get(CONF_ENERGY_MANAGER, DEFAULT_ENERGY_MANAGER)
     read_hp1 = entry.data.get(CONF_READ_HP1, DEFAULT_READ_HP1)
     read_hp2 = entry.data.get(CONF_READ_HP2, DEFAULT_READ_HP2)
@@ -194,6 +198,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         port,
         address,
         scan_interval,
+        latest_firmware,
         energy_manager,
         read_hp1,
         read_hp2,
@@ -272,6 +277,7 @@ class LambdaModbusHub:
             port,
             address,
             scan_interval,
+            latest_firmware=DEFAULT_LATEST_FIRMWARE
             energy_manager=DEFAULT_ENERGY_MANAGER,
             read_hp1=DEFAULT_READ_HP1,
             read_hp2=DEFAULT_READ_HP2,
@@ -307,6 +313,7 @@ class LambdaModbusHub:
         self._lock = threading.Lock()
         self._name = name
         self._address = address
+        self.latest_firmware = latest_firmware
         self.energy_manager = energy_manager
         self.read_hp1 = read_hp1
         self.read_hp2 = read_hp2
@@ -420,6 +427,11 @@ class LambdaModbusHub:
                             self._client.comm_params.host, self._client.comm_params.port)
         return result
 
+
+    @property
+    def latest_firmware_available(self):
+        """Return true if latest firmware is available"""
+        return self.latest_firmware
 
     @property
     def energy_manager_enabled(self):
@@ -711,8 +723,12 @@ class LambdaModbusHub:
 
     def read_modbus_data_buffer(self, buffer_prefix, start_address):
         """start reading buffer data"""
+        if self.latest_firmware_available:
+            count = 10
+        else:
+            count = 4
         buffer_data = self.read_holding_registers(
-            unit=self._address, address=start_address, count=10
+            unit=self._address, address=start_address, count=count
         )
         if buffer_data.isError():
             return False
@@ -728,16 +744,18 @@ class LambdaModbusHub:
             self.data[buffer_prefix + "operating_state"] = operating_state
         self.data[buffer_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
         self.data[buffer_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
-        self.data[buffer_prefix + "modbus_temperature"] = decoder.decode_16bit_int() / 10
-        request_type = decoder.decode_16bit_int()
-        if request_type in BUFFER_REQUEST_TYPES:
-            self.data[buffer_prefix + "request_type"] = BUFFER_REQUEST_TYPES[request_type]
-        else:
-            self.data[buffer_prefix + "request_type"] = request_type
-        self.data[buffer_prefix + "requested_flow_temperature"] = decoder.decode_16bit_int() / 10
-        self.data[buffer_prefix + "requested_return_temperature"] = decoder.decode_16bit_int() / 10
-        self.data[buffer_prefix + "requested_temperature_difference"] = decoder.decode_16bit_int() / 10
-        self.data[buffer_prefix + "requested_capacity"] = decoder.decode_16bit_int() / 10
+
+        if self.latest_firmware_available:
+            self.data[buffer_prefix + "modbus_temperature"] = decoder.decode_16bit_int() / 10
+            request_type = decoder.decode_16bit_int()
+            if request_type in BUFFER_REQUEST_TYPES:
+                self.data[buffer_prefix + "request_type"] = BUFFER_REQUEST_TYPES[request_type]
+            else:
+                self.data[buffer_prefix + "request_type"] = request_type
+            self.data[buffer_prefix + "requested_flow_temperature"] = decoder.decode_16bit_int() / 10
+            self.data[buffer_prefix + "requested_return_temperature"] = decoder.decode_16bit_int() / 10
+            self.data[buffer_prefix + "requested_temperature_difference"] = decoder.decode_16bit_int() / 10
+            self.data[buffer_prefix + "requested_capacity"] = decoder.decode_16bit_int() / 10
 
         buffer_data = self.read_holding_registers(
             unit=self._address, address=start_address + 50, count=1

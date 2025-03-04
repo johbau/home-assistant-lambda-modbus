@@ -9,6 +9,7 @@
           "name": "Das Prefix, das für die Lambda Sensoren verwendet werden soll",
           "port": "Der TCP Port der Lambda Wärmepumpes (z.B. 502)",
           "modbus_address": "Modbus-Adresse",
+          "latest_firmware": "Aktuelle Firmware-Version verfügbar",
           "energy_manager": "Einstellung des Energiemanagers aktivieren",
           "read_heat_pump_1": "Lese die Daten der Wärmepumpe 1 (nur für Modelle mit Wärmepumpe 1)",
           "read_heat_pump_2": "Lese die Daten der Wärmepumpe 2 (nur für Modelle mit Wärmepumpe 2)",
