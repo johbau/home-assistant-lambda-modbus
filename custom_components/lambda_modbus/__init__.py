@@ -277,7 +277,7 @@ class LambdaModbusHub:
             port,
             address,
             scan_interval,
-            latest_firmware=DEFAULT_LATEST_FIRMWARE
+            latest_firmware=DEFAULT_LATEST_FIRMWARE,
             energy_manager=DEFAULT_ENERGY_MANAGER,
             read_hp1=DEFAULT_READ_HP1,
             read_hp2=DEFAULT_READ_HP2,
