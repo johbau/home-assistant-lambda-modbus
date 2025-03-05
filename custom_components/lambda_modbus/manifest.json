@@ -2,10 +2,10 @@
   "domain": "lambda_modbus",
   "name": "Lambda Modbus",
   "documentation": "https://github.com/johbau/home-assistant-lambda-modbus",
+  "iot_class": "local_polling",
   "requirements": ["pymodbus==3.7.4"],
   "dependencies": [],
   "codeowners": ["@johbau"],
   "config_flow": true,
   "version": "0.6.1",
-  "iot_class": "local_polling"
 }
