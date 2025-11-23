@@ -14,6 +14,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, CONF_HOST, CONF_PORT, CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.core import callback
 from homeassistant.helpers.event import async_track_time_interval
 from .const import (
@@ -468,17 +469,18 @@ class LambdaModbusHub:
 
     def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
-        with self._lock:
+        async with self._lock:
             return self._client.read_holding_registers(
                 address=address, count=count, slave=unit
             )
 
     def write_registers(self, unit, address, payload):
         """Write registers."""
-        with self._lock:
-            return self._client.write_registers(
-                address=address, values=payload, slave=unit
-            )
+        try:
+            async with self._lock:
+                return self._client.write_registers(
+                    address=address, values=payload, slave=unit
+                )
         except ModbusException as err:
             raise HomeAssistantError(err) from err
 
