@@ -8,8 +8,7 @@ from typing import Optional
 
 import voluptuous as vol
 from pymodbus.client import ModbusTcpClient
-from pymodbus.constants import Endian
-from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.exceptions import ModbusException
 
 import homeassistant.helpers.config_validation as cv
 from homeassistant.config_entries import ConfigEntry
@@ -93,6 +92,7 @@ from .const import (
     HC_OPERATING_STATES,
     HC_OPERATING_MODES,
 )
+from .payload import BinaryPayloadDecoder, Endian
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -479,6 +479,8 @@ class LambdaModbusHub:
             return self._client.write_registers(
                 address=address, values=payload, slave=unit
             )
+        except ModbusException as err:
+            raise HomeAssistantError(err) from err
 
     def read_modbus_data(self):
         return (
