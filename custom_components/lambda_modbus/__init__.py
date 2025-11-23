@@ -467,14 +467,14 @@ class LambdaModbusHub:
             self.read_hc9 or self.read_hc10 or self.read_hc11 or self.read_hc12
         )
 
-    def read_holding_registers(self, unit, address, count):
+    async def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
         async with self._lock:
             return self._client.read_holding_registers(
                 address=address, count=count, slave=unit
             )
 
-    def write_registers(self, unit, address, payload):
+    async def write_registers(self, unit, address, payload):
         """Write registers."""
         try:
             async with self._lock:
@@ -484,50 +484,50 @@ class LambdaModbusHub:
         except ModbusException as err:
             raise HomeAssistantError(err) from err
 
-    def read_modbus_data(self):
+    async def read_modbus_data(self):
         return (
-                self.read_modbus_data_ambient()
-                and self.read_modbus_data_energy_manager()
-                and self.read_modbus_data_heat_pump1()
-                and self.read_modbus_data_heat_pump2()
-                and self.read_modbus_data_heat_pump3()
-                and self.read_modbus_data_boiler1()
-                and self.read_modbus_data_boiler2()
-                and self.read_modbus_data_boiler3()
-                and self.read_modbus_data_boiler4()
-                and self.read_modbus_data_boiler5()
-                and self.read_modbus_data_buffer1()
-                and self.read_modbus_data_buffer2()
-                and self.read_modbus_data_buffer3()
-                and self.read_modbus_data_buffer4()
-                and self.read_modbus_data_buffer5()
-                and self.read_modbus_data_solar1()
-                and self.read_modbus_data_solar2()
-                and self.read_modbus_data_energy_manager()
-                and self.read_modbus_data_heat_pump1()
-                and self.read_modbus_data_heat_pump2()
-                and self.read_modbus_data_heat_pump3()
-                and self.read_modbus_data_boiler1()
-                and self.read_modbus_data_boiler2()
-                and self.read_modbus_data_boiler3()
-                and self.read_modbus_data_boiler4()
-                and self.read_modbus_data_boiler5()
-                and self.read_modbus_data_heat_circuit1()
-                and self.read_modbus_data_heat_circuit2()
-                and self.read_modbus_data_heat_circuit3()
-                and self.read_modbus_data_heat_circuit4()
-                and self.read_modbus_data_heat_circuit5()
-                and self.read_modbus_data_heat_circuit6()
-                and self.read_modbus_data_heat_circuit7()
-                and self.read_modbus_data_heat_circuit8()
-                and self.read_modbus_data_heat_circuit9()
-                and self.read_modbus_data_heat_circuit10()
-                and self.read_modbus_data_heat_circuit11()
-                and self.read_modbus_data_heat_circuit12()
+                await self.read_modbus_data_ambient()
+                and await self.read_modbus_data_energy_manager()
+                and await self.read_modbus_data_heat_pump1()
+                and await self.read_modbus_data_heat_pump2()
+                and await self.read_modbus_data_heat_pump3()
+                and await self.read_modbus_data_boiler1()
+                and await self.read_modbus_data_boiler2()
+                and await self.read_modbus_data_boiler3()
+                and await self.read_modbus_data_boiler4()
+                and await self.read_modbus_data_boiler5()
+                and await self.read_modbus_data_buffer1()
+                and await self.read_modbus_data_buffer2()
+                and await self.read_modbus_data_buffer3()
+                and await self.read_modbus_data_buffer4()
+                and await self.read_modbus_data_buffer5()
+                and await self.read_modbus_data_solar1()
+                and await self.read_modbus_data_solar2()
+                and await self.read_modbus_data_energy_manager()
+                and await self.read_modbus_data_heat_pump1()
+                and await self.read_modbus_data_heat_pump2()
+                and await self.read_modbus_data_heat_pump3()
+                and await self.read_modbus_data_boiler1()
+                and await self.read_modbus_data_boiler2()
+                and await self.read_modbus_data_boiler3()
+                and await self.read_modbus_data_boiler4()
+                and await self.read_modbus_data_boiler5()
+                and await self.read_modbus_data_heat_circuit1()
+                and await self.read_modbus_data_heat_circuit2()
+                and await self.read_modbus_data_heat_circuit3()
+                and await self.read_modbus_data_heat_circuit4()
+                and await self.read_modbus_data_heat_circuit5()
+                and await self.read_modbus_data_heat_circuit6()
+                and await self.read_modbus_data_heat_circuit7()
+                and await self.read_modbus_data_heat_circuit8()
+                and await self.read_modbus_data_heat_circuit9()
+                and await self.read_modbus_data_heat_circuit10()
+                and await self.read_modbus_data_heat_circuit11()
+                and await self.read_modbus_data_heat_circuit12()
         )
 
-    def read_modbus_data_ambient(self):
-        ambient_data = self.read_holding_registers(
+    async def read_modbus_data_ambient(self):
+        ambient_data = await self.read_holding_registers(
             unit=self._address, address=0, count=5
         )
         if ambient_data.isError():
@@ -547,11 +547,11 @@ class LambdaModbusHub:
         self.data["ambient_temperature_calculated"] = decoder.decode_16bit_int() / 10
         return True
 
-    def read_modbus_data_energy_manager(self):
+    async def read_modbus_data_energy_manager(self):
         if not self.energy_manager_enabled:
             return True
 
-        energy_manager_data = self.read_holding_registers(
+        energy_manager_data = await self.read_holding_registers(
             unit=self._address, address=100, count=5
         )
         if energy_manager_data.isError():
@@ -571,24 +571,24 @@ class LambdaModbusHub:
         self.data["energy_manager_setpoint_power_consumption"] = decoder.decode_16bit_int()
         return True
 
-    def read_modbus_data_heat_pump1(self):
+    async def read_modbus_data_heat_pump1(self):
         if self.read_hp1:
-            return self.read_modbus_data_heat_pump("hp1_", 1000)
+            return await self.read_modbus_data_heat_pump("hp1_", 1000)
         return True
 
-    def read_modbus_data_heat_pump2(self):
+    async def read_modbus_data_heat_pump2(self):
         if self.read_hp2:
-            return self.read_modbus_data_heat_pump("hp2_", 1100)
+            return await self.read_modbus_data_heat_pump("hp2_", 1100)
         return True
 
-    def read_modbus_data_heat_pump3(self):
+    async def read_modbus_data_heat_pump3(self):
         if self.read_hp3:
-            return self.read_modbus_data_heat_pump("hp3_", 1200)
+            return await self.read_modbus_data_heat_pump("hp3_", 1200)
         return True
 
-    def read_modbus_data_heat_pump(self, heat_pump_prefix, start_address):
+    async def read_modbus_data_heat_pump(self, heat_pump_prefix, start_address):
         """start reading heat pump data"""
-        heat_pump_data = self.read_holding_registers(
+        heat_pump_data = await self.read_holding_registers(
             unit=self._address, address=start_address, count=24
         )
         if heat_pump_data.isError():
@@ -633,44 +633,44 @@ class LambdaModbusHub:
         self.data[heat_pump_prefix + "compressor_thermal_power_output_accumulated"] = decoder.decode_32bit_uint()
         return True
 
-    def read_modbus_data_boiler1(self):
+    async def read_modbus_data_boiler1(self):
         if self.read_boiler1:
-            return self.read_modbus_data_boiler("boiler1_", 2000)
+            return await self.read_modbus_data_boiler("boiler1_", 2000)
         return True
 
-    def read_modbus_data_boiler2(self):
+    async def read_modbus_data_boiler2(self):
         if self.read_boiler2:
-            return self.read_modbus_data_boiler("boiler2_", 2100)
+            return await self.read_modbus_data_boiler("boiler2_", 2100)
         return True
 
-    def read_modbus_data_boiler3(self):
+    async def read_modbus_data_boiler3(self):
         if self.read_boiler3:
-            return self.read_modbus_data_boiler("boiler3_", 2200)
+            return await self.read_modbus_data_boiler("boiler3_", 2200)
         return True
 
-    def read_modbus_data_boiler4(self):
+    async def read_modbus_data_boiler4(self):
         if self.read_boiler4:
-            return self.read_modbus_data_boiler("boiler4_", 2300)
+            return await self.read_modbus_data_boiler("boiler4_", 2300)
         return True
 
-    def read_modbus_data_boiler5(self):
+    async def read_modbus_data_boiler5(self):
         if self.read_boiler5:
-            return self.read_modbus_data_boiler("boiler5_", 2400)
+            return await self.read_modbus_data_boiler("boiler5_", 2400)
         return True
 
-    def read_modbus_data_solar1(self):
+    async def read_modbus_data_solar1(self):
         if self.read_solar1:
-            return self.read_modbus_data_solar("solar1_", 2500)
+            return await self.read_modbus_data_solar("solar1_", 2500)
         return True
 
-    def read_modbus_data_solar2(self):
+    async def read_modbus_data_solar2(self):
         if self.read_solar2:
-            return self.read_modbus_data_solar("solar2_", 2600)
+            return await self.read_modbus_data_solar("solar2_", 2600)
         return True
 
-    def read_modbus_data_boiler(self, boiler_prefix, start_address):
+    async def read_modbus_data_boiler(self, boiler_prefix, start_address):
         """start reading boiler data"""
-        boiler_data = self.read_holding_registers(
+        boiler_data = await self.read_holding_registers(
             unit=self._address, address=start_address, count=4
         )
         if boiler_data.isError():
@@ -688,7 +688,7 @@ class LambdaModbusHub:
         self.data[boiler_prefix + "high_temperature"] = decoder.decode_16bit_int() / 10
         self.data[boiler_prefix + "low_temperature"] = decoder.decode_16bit_int() / 10
 
-        boiler_data = self.read_holding_registers(
+        boiler_data = await self.read_holding_registers(
             unit=self._address, address=start_address + 50, count=1
         )
         if boiler_data.isError():
@@ -700,38 +700,38 @@ class LambdaModbusHub:
         self.data[boiler_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
         return True
 
-    def read_modbus_data_buffer1(self):
+    async def read_modbus_data_buffer1(self):
         if self.read_buffer1:
-            return self.read_modbus_data_buffer("buffer1_", 3000)
+            return await self.read_modbus_data_buffer("buffer1_", 3000)
         return True
 
-    def read_modbus_data_buffer2(self):
+    async def read_modbus_data_buffer2(self):
         if self.read_buffer2:
-            return self.read_modbus_data_buffer("buffer2_", 3100)
+            return await self.read_modbus_data_buffer("buffer2_", 3100)
         return True
 
-    def read_modbus_data_buffer3(self):
+    async def read_modbus_data_buffer3(self):
         if self.read_buffer3:
-            return self.read_modbus_data_buffer("buffer3_", 3200)
+            return await self.read_modbus_data_buffer("buffer3_", 3200)
         return True
 
-    def read_modbus_data_buffer4(self):
+    async def read_modbus_data_buffer4(self):
         if self.read_buffer4:
-            return self.read_modbus_data_buffer("buffer4_", 3300)
+            return await self.read_modbus_data_buffer("buffer4_", 3300)
         return True
 
-    def read_modbus_data_buffer5(self):
+    async def read_modbus_data_buffer5(self):
         if self.read_buffer5:
-            return self.read_modbus_data_buffer("buffer5_", 3400)
+            return await self.read_modbus_data_buffer("buffer5_", 3400)
         return True
 
-    def read_modbus_data_buffer(self, buffer_prefix, start_address):
+    async def read_modbus_data_buffer(self, buffer_prefix, start_address):
         """start reading buffer data"""
         if self.latest_firmware_available:
             count = 10
         else:
             count = 4
-        buffer_data = self.read_holding_registers(
+        buffer_data = await self.read_holding_registers(
             unit=self._address, address=start_address, count=count
         )
         if buffer_data.isError():
@@ -761,7 +761,7 @@ class LambdaModbusHub:
             self.data[buffer_prefix + "requested_temperature_difference"] = decoder.decode_16bit_int() / 10
             self.data[buffer_prefix + "requested_capacity"] = decoder.decode_16bit_int() / 10
 
-        buffer_data = self.read_holding_registers(
+        buffer_data = await self.read_holding_registers(
             unit=self._address, address=start_address + 50, count=1
         )
         if buffer_data.isError():
@@ -773,19 +773,19 @@ class LambdaModbusHub:
         self.data[buffer_prefix + "maximum_temperature"] = decoder.decode_16bit_int() / 10
         return True
 
-    def read_modbus_data_solar1(self):
+    async def read_modbus_data_solar1(self):
         if self.read_solar1:
-            return self.read_modbus_data_solar("solar1_", 4000)
+            return await self.read_modbus_data_solar("solar1_", 4000)
         return True
 
-    def read_modbus_data_solar2(self):
+    async def read_modbus_data_solar2(self):
         if self.read_solar2:
-            return self.read_modbus_data_solar("solar2_", 4100)
+            return await self.read_modbus_data_solar("solar2_", 4100)
         return True
 
-    def read_modbus_data_solar(self, solar_prefix, start_address):
+    async def read_modbus_data_solar(self, solar_prefix, start_address):
         """start reading solar data"""
-        solar_data = self.read_holding_registers(
+        solar_data = await self.read_holding_registers(
             unit=self._address, address=start_address, count=5
         )
         if solar_data.isError():
@@ -810,7 +810,7 @@ class LambdaModbusHub:
         self.data[solar_prefix + "buffer1_temperature"] = decoder.decode_16bit_int() / 10
         self.data[solar_prefix + "buffer2_temperature"] = decoder.decode_16bit_int() / 10
 
-        buffer_data = self.read_holding_registers(
+        buffer_data = await self.read_holding_registers(
             unit=self._address, address=start_address + 50, count=2
         )
         if buffer_data.isError():
@@ -829,64 +829,64 @@ class LambdaModbusHub:
             return self.read_modbus_data_heat_circuit("hc1_", 5000)
         return True
 
-    def read_modbus_data_heat_circuit2(self):
+    async def read_modbus_data_heat_circuit2(self):
         if self.read_hc2:
-            return self.read_modbus_data_heat_circuit("hc2_", 5100)
+            return await self.read_modbus_data_heat_circuit("hc2_", 5100)
         return True
 
-    def read_modbus_data_heat_circuit3(self):
+    async def read_modbus_data_heat_circuit3(self):
         if self.read_hc3:
-            return self.read_modbus_data_heat_circuit("hc3_", 5200)
+            return await self.read_modbus_data_heat_circuit("hc3_", 5200)
         return True
 
-    def read_modbus_data_heat_circuit4(self):
+    async def read_modbus_data_heat_circuit4(self):
         if self.read_hc4:
-            return self.read_modbus_data_heat_circuit("hc4_", 5300)
+            return await self.read_modbus_data_heat_circuit("hc4_", 5300)
         return True
 
-    def read_modbus_data_heat_circuit5(self):
+    async def read_modbus_data_heat_circuit5(self):
         if self.read_hc5:
-            return self.read_modbus_data_heat_circuit("hc5_", 5400)
+            return await self.read_modbus_data_heat_circuit("hc5_", 5400)
         return True
 
-    def read_modbus_data_heat_circuit6(self):
+    async def read_modbus_data_heat_circuit6(self):
         if self.read_hc6:
-            return self.read_modbus_data_heat_circuit("hc6_", 5500)
+            return await self.read_modbus_data_heat_circuit("hc6_", 5500)
         return True
 
-    def read_modbus_data_heat_circuit7(self):
+    async def read_modbus_data_heat_circuit7(self):
         if self.read_hc7:
-            return self.read_modbus_data_heat_circuit("hc7_", 5600)
+            return await self.read_modbus_data_heat_circuit("hc7_", 5600)
         return True
 
-    def read_modbus_data_heat_circuit8(self):
+    async def read_modbus_data_heat_circuit8(self):
         if self.read_hc8:
-            return self.read_modbus_data_heat_circuit("hc8_", 5700)
+            return await self.read_modbus_data_heat_circuit("hc8_", 5700)
         return True
 
-    def read_modbus_data_heat_circuit9(self):
+    async def read_modbus_data_heat_circuit9(self):
         if self.read_hc9:
-            return self.read_modbus_data_heat_circuit("hc9_", 5800)
+            return await self.read_modbus_data_heat_circuit("hc9_", 5800)
         return True
 
-    def read_modbus_data_heat_circuit10(self):
+    async def read_modbus_data_heat_circuit10(self):
         if self.read_hc10:
-            return self.read_modbus_data_heat_circuit("hc10_", 5900)
+            return await self.read_modbus_data_heat_circuit("hc10_", 5900)
         return True
 
-    def read_modbus_data_heat_circuit11(self):
+    async def read_modbus_data_heat_circuit11(self):
         if self.read_hc11:
-            return self.read_modbus_data_heat_circuit("hc11_", 6000)
+            return await self.read_modbus_data_heat_circuit("hc11_", 6000)
         return True
 
-    def read_modbus_data_heat_circuit12(self):
+    async def read_modbus_data_heat_circuit12(self):
         if self.read_hc12:
-            return self.read_modbus_data_heat_circuit("hc12_", 6100)
+            return await self.read_modbus_data_heat_circuit("hc12_", 6100)
         return True
 
-    def read_modbus_data_heat_circuit(self, heat_circuit_prefix, start_address):
+    async def read_modbus_data_heat_circuit(self, heat_circuit_prefix, start_address):
         """start reading heat circuit data"""
-        heat_circuit_data = self.read_holding_registers(
+        heat_circuit_data = await self.read_holding_registers(
             unit=self._address, address=start_address, count=7
         )
         if heat_circuit_data.isError():
@@ -911,7 +911,7 @@ class LambdaModbusHub:
         else:
             self.data[heat_circuit_prefix + "operating_mode"] = operating_state
 
-        heat_circuit_data = self.read_holding_registers(
+        heat_circuit_data = await self.read_holding_registers(
             unit=self._address, address=start_address + 50, count=3
         )
         if heat_circuit_data.isError():
