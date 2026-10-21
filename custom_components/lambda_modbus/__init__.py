@@ -2,12 +2,11 @@
 import asyncio
 import logging
 import operator
-import threading
 from datetime import timedelta
 from typing import Optional
 
 import voluptuous as vol
-from pymodbus.client import ModbusTcpClient
+from pymodbus.client import AsyncModbusTcpClient
 from pymodbus.exceptions import ModbusException
 
 import homeassistant.helpers.config_validation as cv
@@ -310,8 +309,8 @@ class LambdaModbusHub:
     ):
         """Initialize the Modbus hub."""
         self._hass = hass
-        self._client = ModbusTcpClient(host=host, port=port, timeout=max(3, (scan_interval - 1)))
-        self._lock = threading.Lock()
+        self._client = AsyncModbusTcpClient(host=host, port=port, timeout=max(3, (scan_interval - 1)))
+        self._lock = asyncio.Lock()
         self._name = name
         self._address = address
         self.latest_firmware = latest_firmware
@@ -369,32 +368,25 @@ class LambdaModbusHub:
             """stop the interval timer upon removal of last sensor"""
             self._unsub_interval_method()
             self._unsub_interval_method = None
-            self.close()
+            self._hass.async_create_task(self.close())
 
-    async def async_refresh_modbus_data(self, _now: Optional[int] = None) -> dict:
+    async def async_refresh_modbus_data(self, _now: Optional[int] = None) -> None:
         """Time to update."""
-        result : bool = await self._hass.async_add_executor_job(self._refresh_modbus_data)
+        if not self._sensors:
+            return
+
+        if not await self._check_and_reconnect():
+            #if not connected, skip
+            return
+
+        try:
+            result = await self.read_modbus_data()
+        except Exception:
+            _LOGGER.exception("Error reading modbus data")
+            result = False
         if result:
             for update_callback in self._sensors:
                 update_callback()
-
-
-    def _refresh_modbus_data(self, _now: Optional[int] = None) -> bool:
-        """Time to update."""
-        if not self._sensors:
-            return False
-
-        if not self._check_and_reconnect():
-            #if not connected, skip
-            return False
-
-        try:
-            update_result = self.read_modbus_data()
-        except Exception as e:
-            _LOGGER.exception("Error reading modbus data", exc_info=True)
-            update_result = False
-        return update_result
-
 
 
     @property
@@ -402,23 +394,22 @@ class LambdaModbusHub:
         """Return the name of this hub."""
         return self._name
 
-    def close(self):
+    async def close(self):
         """Disconnect client."""
-        with self._lock:
+        async with self._lock:
             self._client.close()
 
-    def _check_and_reconnect(self):
+    async def _check_and_reconnect(self):
         if not self._client.connected:
             _LOGGER.info("modbus client is not connected, trying to reconnect")
-            return self.connect()
+            return await self.connect()
 
         return self._client.connected
 
-    def connect(self):
+    async def connect(self):
         """Connect client."""
-        result = False
-        with self._lock:
-            result = self._client.connect()
+        async with self._lock:
+            result = await self._client.connect()
 
         if result:
             _LOGGER.info("successfully connected to %s:%s",
@@ -470,16 +461,16 @@ class LambdaModbusHub:
     async def read_holding_registers(self, unit, address, count):
         """Read holding registers."""
         async with self._lock:
-            return self._client.read_holding_registers(
-                address=address, count=count, slave=unit
+            return await self._client.read_holding_registers(
+                address=address, count=count, device_id=unit
             )
 
     async def write_registers(self, unit, address, payload):
         """Write registers."""
         try:
             async with self._lock:
-                return self._client.write_registers(
-                    address=address, values=payload, slave=unit
+                return await self._client.write_registers(
+                    address=address, values=payload, device_id=unit
                 )
         except ModbusException as err:
             raise HomeAssistantError(err) from err
@@ -503,15 +494,6 @@ class LambdaModbusHub:
                 and await self.read_modbus_data_buffer5()
                 and await self.read_modbus_data_solar1()
                 and await self.read_modbus_data_solar2()
-                and await self.read_modbus_data_energy_manager()
-                and await self.read_modbus_data_heat_pump1()
-                and await self.read_modbus_data_heat_pump2()
-                and await self.read_modbus_data_heat_pump3()
-                and await self.read_modbus_data_boiler1()
-                and await self.read_modbus_data_boiler2()
-                and await self.read_modbus_data_boiler3()
-                and await self.read_modbus_data_boiler4()
-                and await self.read_modbus_data_boiler5()
                 and await self.read_modbus_data_heat_circuit1()
                 and await self.read_modbus_data_heat_circuit2()
                 and await self.read_modbus_data_heat_circuit3()
@@ -656,16 +638,6 @@ class LambdaModbusHub:
     async def read_modbus_data_boiler5(self):
         if self.read_boiler5:
             return await self.read_modbus_data_boiler("boiler5_", 2400)
-        return True
-
-    async def read_modbus_data_solar1(self):
-        if self.read_solar1:
-            return await self.read_modbus_data_solar("solar1_", 2500)
-        return True
-
-    async def read_modbus_data_solar2(self):
-        if self.read_solar2:
-            return await self.read_modbus_data_solar("solar2_", 2600)
         return True
 
     async def read_modbus_data_boiler(self, boiler_prefix, start_address):
@@ -824,9 +796,9 @@ class LambdaModbusHub:
 
         return True
 
-    def read_modbus_data_heat_circuit1(self):
+    async def read_modbus_data_heat_circuit1(self):
         if self.read_hc1:
-            return self.read_modbus_data_heat_circuit("hc1_", 5000)
+            return await self.read_modbus_data_heat_circuit("hc1_", 5000)
         return True
 
     async def read_modbus_data_heat_circuit2(self):

@@ -2,9 +2,9 @@
   "domain": "lambda_modbus",
   "name": "Lambda Modbus",
   "documentation": "https://github.com/johbau/home-assistant-lambda-modbus",
-  "requirements": ["pymodbus==3.11.2"],
+  "requirements": ["pymodbus==3.13.1"],
   "dependencies": [],
   "codeowners": ["@johbau"],
   "config_flow": true,
-  "version": "0.7.3"
+  "version": "0.7.4"
 }
